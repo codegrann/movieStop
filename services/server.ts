@@ -23,7 +23,11 @@ app.use(passport.initialize());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/movies', movieRoutes);
-
+app.use(
+  cors({
+    origin: 'http://localhost:5173', // Frontend URL
+  })
+);
 
 app.get('/', (req, res) => {
   res.send('MovieApp Backend is running...');
