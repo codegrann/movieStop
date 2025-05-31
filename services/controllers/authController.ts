@@ -18,11 +18,17 @@ export const registerUser = async (req: Request, res: Response) => {
 
     user = new User({ email, password: hashed, name });
     await user.save();
+    // console.log('My user is:', user);
 
+    // console.log('Before calling signToken');
     const token = signToken({ id: user._id, email: user.email });
+    // console.log('After calling signToken');
+    
     res.status(201).json({ token, user: { id: user._id, email: user.email, name: user.name } });
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    // res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error', error: error.message || error.toString() });
+
   }
 };
 
@@ -43,7 +49,7 @@ export const loginUser = async (req: Request, res: Response) => {
     const token = signToken({ id: user._id, email: user.email });
     res.json({ token, user: { id: user._id, email: user.email, name: user.name } });
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error', error: error.message || error.toString() });
   }
 };
 
