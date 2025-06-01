@@ -7,7 +7,7 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
-import * as jwt_decode from 'jwt-decode';
+import * as jwtDecode from 'jwt-decode';
 
 import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register';
@@ -34,9 +34,14 @@ const App = () => {
     useEffect(() => {
       const params = new URLSearchParams(location.search);
       const token = params.get('token');
+      console.log('params to use to decode', params);
+      console.log('Token to decode', token);
+  
+      // Check if token is present
       if (token) {
         try {
           const decoded: any = jwtDecode(token);
+          console.log('Decoded token:', decoded);
   
           const user = {
             id: decoded.id,
@@ -45,6 +50,7 @@ const App = () => {
           };
   
           login(token, user);
+          console.log('User logged in:', user);
           navigate(location.pathname, { replace: true });
         } catch (e) {
           console.error('Invalid token:', e);

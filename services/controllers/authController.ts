@@ -1,8 +1,11 @@
 import type { Request, Response } from 'express';
 import User from '../models/userModel.ts';
 import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv';
 import { signToken } from '../utils/jwt.ts';
 import passport from 'passport';
+
+dotenv.config();
 
 export const registerUser = async (req: Request, res: Response) => {
   const { email, password, name } = req.body;
@@ -56,9 +59,12 @@ export const loginUser = async (req: Request, res: Response) => {
 // Google OAuth callback will be handled by passport middleware
 export const googleAuthCallback = (req: any, res: any) => {
   // Passport attaches user to req.user
-  if (!req.user) return res.redirect('/login?error=auth_failed');
-
+  if (!req.user) {
+    console.log('No user from Google OAuth');
+    return res.redirect('/login?error=auth_failed');
+  }
   const token = signToken({ id: req.user._id, email: req.user.email });
+  console.log('Google Auth Generated Token:', token);
   // Redirect to frontend with token, or send token as response (depends on your frontend flow)
   res.redirect(`${process.env.FRONTEND_URL}/?token=${token}`);
 };

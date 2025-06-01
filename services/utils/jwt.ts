@@ -11,7 +11,7 @@ export const signToken = (payload: object, expiresIn = '1h') => {
     throw new Error('JWT_SECRET is not defined');
   }
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn });
-  console.log('Generated token:', token);
+  // console.log('Generated token:', token);
   return token;
 };
 

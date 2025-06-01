@@ -1,6 +1,10 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import User from '../models/userModel.ts';
+import dotenv from 'dotenv';
+
+// Load .env early to make sure process.env is populated
+dotenv.config();
 
 passport.use(
   new GoogleStrategy(

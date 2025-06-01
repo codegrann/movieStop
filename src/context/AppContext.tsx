@@ -49,11 +49,17 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const login = (newToken: string, newUser: User) => {
     setToken(newToken);
     setUser(newUser);
+    localStorage.setItem('token', newToken);
+    localStorage.setItem('user', JSON.stringify(newUser));
+    window.location.href = '/';
   };
 
   const logout = () => {
     setToken(null);
     setUser(null);
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = '/login';
   };
 
   return (
