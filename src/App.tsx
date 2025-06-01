@@ -7,7 +7,7 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
-import * as jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register';
@@ -29,7 +29,7 @@ const App = () => {
   const AuthHandler = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { login } = useAuth();
+    const { loginWithToken } = useAuth();
   
     useEffect(() => {
       const params = new URLSearchParams(location.search);
@@ -49,14 +49,14 @@ const App = () => {
             name: decoded.name || '',
           };
   
-          login(token, user);
+          loginWithToken(token, user);
           console.log('User logged in:', user);
           navigate(location.pathname, { replace: true });
         } catch (e) {
           console.error('Invalid token:', e);
         }
       }
-    }, [location.search, login, navigate, location.pathname]);
+    }, [location.search, loginWithToken, navigate, location.pathname]);
   
     return null; // This component only handles login side effect
   };

@@ -63,7 +63,7 @@ export const googleAuthCallback = (req: any, res: any) => {
     console.log('No user from Google OAuth');
     return res.redirect('/login?error=auth_failed');
   }
-  const token = signToken({ id: req.user._id, email: req.user.email });
+  const token = signToken({ id: req.user._id, email: req.user.email, name: req.user.name });
   console.log('Google Auth Generated Token:', token);
   // Redirect to frontend with token, or send token as response (depends on your frontend flow)
   res.redirect(`${process.env.FRONTEND_URL}/?token=${token}`);
