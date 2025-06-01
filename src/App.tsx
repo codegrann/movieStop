@@ -15,6 +15,7 @@ import HomePage from './pages/Home';
 import MovieDetailsPage from './pages/MovieDetails';
 
 import { useAuth } from './hooks/useAuth'; // custom hook to get auth state
+import Navbar from './components/layout/Navbar';
 
 // Protected route component to guard private routes
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
@@ -70,7 +71,7 @@ const App = () => {
         <Route path="/register" element={<RegisterPage />} />
 
         {/* Protected routes */}
-        <Route
+        {/* <Route
           path="/"
           element={
             <ProtectedRoute>
@@ -85,7 +86,22 @@ const App = () => {
               <MovieDetailsPage />
             </ProtectedRoute>
           }
-        />
+        /> */}
+
+        <Route
+          path="/*"
+          element={
+            <ProtectedRoute>
+              <>
+              <Navbar />
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/movies/:id" element={<MovieDetailsPage />} />
+              </Routes>
+            </>
+          </ProtectedRoute>
+      }
+    />
 
         {/* Redirect any unknown route to home */}
         <Route path="*" element={<Navigate to="/" replace />} />
