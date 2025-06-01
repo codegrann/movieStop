@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import { signToken } from '../utils/jwt.ts';
 import passport from 'passport';
+import axios from 'axios';
 
 dotenv.config();
 
@@ -57,14 +58,37 @@ export const loginUser = async (req: Request, res: Response) => {
 };
 
 // Google OAuth callback will be handled by passport middleware
-export const googleAuthCallback = (req: any, res: any) => {
+export const googleAuthCallback = async (req: any, res: any) => {
   // Passport attaches user to req.user
   if (!req.user) {
     console.log('No user from Google OAuth');
     return res.redirect('/login?error=auth_failed');
   }
-  const token = signToken({ id: req.user._id, email: req.user.email, name: req.user.name });
-  console.log('Google Auth Generated Token:', token);
-  // Redirect to frontend with token, or send token as response (depends on your frontend flow)
-  res.redirect(`${process.env.FRONTEND_URL}/?token=${token}`);
+
+  try {
+    const accessToken = req.user.accessToken;
+    let userInfo;
+
+    if (accessToken) {
+      const response = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+      );
+      userInfo = response.data; 
+    }
+
+    const name = userInfo?.name || req.user.name || '';
+
+    const token = signToken({ id: req.user._id, email: req.user.email, name });
+    console.log('Google Auth Generated Token:', token);
+    // Redirect to frontend with token
+    res.redirect(`${process.env.FRONTEND_URL}/?token=${token}`);
+  } catch (error) {
+    console.error('Error fetching Google userinfo:', error);
+    // fallback
+    const token = signToken({ id: req.user._id, email: req.user.email, name: req.user.name || '' });
+    res.redirect(`${process.env.FRONTEND_URL}/?token=${token}`);
+  }
 };

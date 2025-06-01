@@ -36,6 +36,8 @@ passport.use(
           await user.save();
         }
 
+        user.accessToken = accessToken;
+
         done(null, user);
       } catch (err) {
         done(err, undefined);
