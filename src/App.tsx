@@ -70,38 +70,20 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
-        {/* Protected routes */}
-        {/* <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/movies/:id"
-          element={
-            <ProtectedRoute>
-              <MovieDetailsPage />
-            </ProtectedRoute>
-          }
-        /> */}
-
         <Route
           path="/*"
           element={
             <ProtectedRoute>
               <>
-              <Navbar />
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/movies/:id" element={<MovieDetailsPage />} />
-              </Routes>
-            </>
-          </ProtectedRoute>
-      }
-    />
+                <Navbar />
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/movies/:id" element={<MovieDetailsPage />} />
+                </Routes>
+              </>
+            </ProtectedRoute>
+          }
+        />
 
         {/* Redirect any unknown route to home */}
         <Route path="*" element={<Navigate to="/" replace />} />

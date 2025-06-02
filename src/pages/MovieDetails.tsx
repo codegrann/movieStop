@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 
 interface MovieDetails {
   id: number;
@@ -36,8 +37,10 @@ const MovieDetailsPage = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setMovie(res.data);
+        console.log('Movie details:', res.data);
       } catch {
         setError('Failed to load movie details');
+        console.log('failed to load movie details');
       } finally {
         setLoading(false);
       }
@@ -46,12 +49,12 @@ const MovieDetailsPage = () => {
     fetchDetails();
   }, [id]);
 
-  if (loading) return <p className="text-center text-white mt-10">Loading...</p>;
-  if (error) return <p className="text-center text-red-500 mt-10">{error}</p>;
-  if (!movie) return <p className="text-center text-white mt-10">Movie not found</p>;
+  if (loading) return <LoadingSpinner />;
+  if (error) return <p className="text-center text-red-500 pt-20 mt-10">{error}</p>;
+  if (!movie) return <p className="text-center text-white pt-20 mt-10">Movie not found</p>;
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-4 max-w-5xl mx-auto">
+    <div className="min-h-screen bg-gray-900 text-white px-6 pt-20 max-w-full mx-auto">
       <button
         onClick={() => navigate(-1)}
         className="mb-4 px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
@@ -59,12 +62,12 @@ const MovieDetailsPage = () => {
         Back
       </button>
 
-      <div className="flex flex-col md:flex-row gap-6">
+      <div className="flex flex-col md:flex-row gap-8 items-start">
         {movie.poster_path ? (
           <img
             src={`${IMAGE_BASE}${movie.poster_path}`}
             alt={movie.title}
-            className="w-full md:w-1/3 rounded"
+            className="w-full md:w-64 rounded shadow-lg"
           />
         ) : (
           <div className="w-full md:w-1/3 bg-gray-700 flex items-center justify-center text-gray-400 rounded h-64">
@@ -72,7 +75,7 @@ const MovieDetailsPage = () => {
           </div>
         )}
 
-        <div className="flex-1">
+        <div className="flex-1 max-w-4xl">
           <h1 className="text-3xl font-bold mb-2">{movie.title}</h1>
           <p className="text-gray-300 mb-4">{movie.overview}</p>
 

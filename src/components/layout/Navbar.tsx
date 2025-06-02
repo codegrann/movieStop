@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Menu, X, User, Heart } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const { user, logoutUser } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate(); 
 
   const menuItems = [
     { label: 'Account', icon: <User className="w-5 h-5 mr-2" />, onClick: () => alert('Account page coming soon!') },
@@ -14,15 +16,15 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-gray-800 text-white flex items-center justify-between px-4 py-3">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-800 text-white flex items-center justify-between px-4 py-3">
         <div className="flex items-center space-x-4">
-          <div className="text-xl font-bold cursor-pointer select-none">MovieStop</div>
+          <div className="text-xl font-bold cursor-pointer select-none" onClick={() => navigate('/')} >MovieStop</div>
           <div className="hidden md:flex space-x-6">
             {menuItems.map((item) => (
               <button
                 key={item.label}
                 onClick={item.onClick}
-                className="flex items-center hover:text-cyan-400 transition"
+                className="flex items-center text-cyan-200 hover:text-cyan-500 transition"
               >
                 {item.icon}
                 {item.label}
@@ -35,7 +37,7 @@ const Navbar = () => {
           <span className="hidden md:block">Hello, {user?.name || 'User'}</span>
           <button
             onClick={logoutUser}
-            className="bg-red-600 hover:bg-red-500 rounded px-3 py-1 text-sm"
+            className="max-sm:hidden bg-red-600 hover:bg-red-500 rounded px-3 py-1 text-sm"
           >
             Logout
           </button>
