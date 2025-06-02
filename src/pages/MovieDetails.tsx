@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import { useAuth } from '../hooks/useAuth';
 import API from '../services/api';
@@ -28,7 +27,8 @@ const MovieDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [playingMsg, setPlayingMsg] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [favorites, setFavorites] = useState<number[]>([]);
+  // const [isFavorite, setIsFavorite] = useState(false);
   const { token, user } = useAuth();
   const navigate = useNavigate();
 
@@ -59,10 +59,27 @@ const MovieDetailsPage = () => {
     }
   }, [user, id]);
 
+  useEffect(() => {
+    if (!token) return;
+    const fetchFavorites = async () => {
+      try {
+        const res = await API.get('/user/favorites', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setFavorites(res.data.favorites);
+      } catch (err) {
+        console.error('Failed to fetch favorites', err);
+      }
+    };
+    fetchFavorites();
+  }, [token]);
+
   const handlePlayClick = () => {
     setPlayingMsg(true);
     setTimeout(() => setPlayingMsg(false), 2000);
   };
+
+  const isFavorite = favorites.includes(Number(id));
 
   const handleToggleFavorite = async () => {
     if (!token || !movie) return;
@@ -73,14 +90,15 @@ const MovieDetailsPage = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         // Update UI & user context
-        setIsFavorite(false);
+        setFavorites(prev => prev.filter(favId => favId !== movie.id));
         // Ideally update user.favorites in context too (trigger re-fetch or update state)
       } else {
         // Add favorite
         await API.post(`/user/favorites/${movie.id}`, {}, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setIsFavorite(true);
+        setFavorites(prev => prev.filter(favId => favId !== movie.id));
+        navigate('/favorites');
         // Update user.favorites in context similarly
       }
     } catch (err) {
@@ -88,7 +106,7 @@ const MovieDetailsPage = () => {
     }
   };
 
-  if (loading) return <LoadingSpinner />;
+  if (loading) return <div className='pt-24'><LoadingSpinner /></div>;
   if (error) return <p className="text-center text-red-500 pt-20 mt-10">{error}</p>;
   if (!movie) return <p className="text-center text-white pt-20 mt-10">Movie not found</p>;
 
@@ -135,11 +153,11 @@ const MovieDetailsPage = () => {
           {/* Play Button */}
           <button
             onClick={handlePlayClick}
-            className="mb-3 px-6 py-2 bg-cyan-600 rounded hover:bg-cyan-700"
+            className="mb-3 mr-2 px-6 py-2 bg-cyan-600 rounded hover:bg-cyan-700"
           >
             Play
           </button>
-          {playingMsg && <p className="text-yellow-300 mb-4">Playing coming soon!</p>}
+          {playingMsg && <p className="text-yellow-300 text-sm mb-4">Playing coming soon!</p>}
 
           {/* Add to Favorites Button */}
           <button

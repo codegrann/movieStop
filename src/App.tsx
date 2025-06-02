@@ -17,10 +17,15 @@ import FavoritesPage from './pages/FavoritesPage';
 
 import { useAuth } from './hooks/useAuth'; // custom hook to get auth state
 import Navbar from './components/layout/Navbar';
+import LoadingSpinner from './components/common/LoadingSpinner';
 
 // Protected route component to guard private routes
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { user } = useAuth();
+  // if (user === null){
+  //   return <div className='pt-20'><LoadingSpinner /></div>
+  // }
+
   if (!user) {
     return <Navigate to="/login" replace />;
   }
@@ -97,7 +102,7 @@ const App = () => {
                   <Route path="/" element={<HomePage />} />
                   <Route path="/movies/:id" element={<MovieDetailsPage />} />
                   {/* favourites movie page */}
-                  <Route path="/favourites" element={<FavoritesPage />} />
+                  <Route path="/favorites" element={<FavoritesPage />} />
                 </Routes>
               </>
             </ProtectedRoute>
