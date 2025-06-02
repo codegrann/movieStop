@@ -13,6 +13,7 @@ import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register';
 import HomePage from './pages/Home';
 import MovieDetailsPage from './pages/MovieDetails';
+import FavoritesPage from './pages/FavoritesPage';
 
 import { useAuth } from './hooks/useAuth'; // custom hook to get auth state
 import Navbar from './components/layout/Navbar';
@@ -27,6 +28,22 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
 };
 
 const App = () => {
+  const { logout } = useAuth();
+
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decoded: any = jwtDecode(token);
+      if (decoded.exp * 1000 < Date.now()) {
+        // Token expired
+        logout();
+      } else {
+        return;
+      }
+    }
+  }, []);
+
   const AuthHandler = () => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -79,6 +96,8 @@ const App = () => {
                 <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/movies/:id" element={<MovieDetailsPage />} />
+                  {/* favourites movie page */}
+                  <Route path="/favourites" element={<FavoritesPage />} />
                 </Routes>
               </>
             </ProtectedRoute>

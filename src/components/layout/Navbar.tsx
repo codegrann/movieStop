@@ -6,11 +6,11 @@ import { useNavigate } from 'react-router-dom';
 const Navbar = () => {
   const { user, logoutUser } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const menuItems = [
-    { label: 'Account', icon: <User className="w-5 h-5 mr-2" />, onClick: () => alert('Account page coming soon!') },
-    { label: 'Favorites', icon: <Heart className="w-5 h-5 mr-2" />, onClick: () => alert('Favorites page coming soon!') },
+    { label: 'Account', icon: <User className="w-5 h-5 mr-2" />, onClick: () => navigate('/profile') },
+    { label: 'Favorites', icon: <Heart className="w-5 h-5 mr-2" />, onClick: () => navigate('/favorites') },
     // Add more items here
   ];
 

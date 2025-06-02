@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import { useAuth } from '../hooks/useAuth';
+import API from '../services/api';
 
 interface MovieDetails {
   id: number;
@@ -25,6 +27,9 @@ const MovieDetailsPage = () => {
   const [movie, setMovie] = useState<MovieDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [playingMsg, setPlayingMsg] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const { token, user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,21 +38,55 @@ const MovieDetailsPage = () => {
       setError(null);
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`http://localhost:5000/api/movies/${id}`, {
+        const res = await API.get(`/movies/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setMovie(res.data);
-        console.log('Movie details:', res.data);
       } catch {
         setError('Failed to load movie details');
-        console.log('failed to load movie details');
       } finally {
         setLoading(false);
       }
     };
 
     fetchDetails();
-  }, [id]);
+  }, [id, token]);
+
+  // Check if movie is favorite
+  useEffect(() => {
+    if (user && user.favorites && id) {
+      setIsFavorite(user.favorites.includes(Number(id)));
+    }
+  }, [user, id]);
+
+  const handlePlayClick = () => {
+    setPlayingMsg(true);
+    setTimeout(() => setPlayingMsg(false), 2000);
+  };
+
+  const handleToggleFavorite = async () => {
+    if (!token || !movie) return;
+    try {
+      if (isFavorite) {
+        // Remove favorite
+        await API.delete(`/user/favorites/${movie.id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        // Update UI & user context
+        setIsFavorite(false);
+        // Ideally update user.favorites in context too (trigger re-fetch or update state)
+      } else {
+        // Add favorite
+        await API.post(`/user/favorites/${movie.id}`, {}, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setIsFavorite(true);
+        // Update user.favorites in context similarly
+      }
+    } catch (err) {
+      console.error('Failed to update favorite', err);
+    }
+  };
 
   if (loading) return <LoadingSpinner />;
   if (error) return <p className="text-center text-red-500 pt-20 mt-10">{error}</p>;
@@ -92,6 +131,23 @@ const MovieDetailsPage = () => {
             <strong>Genres:</strong>{' '}
             {movie.genres.map((g) => g.name).join(', ')}
           </p>
+
+          {/* Play Button */}
+          <button
+            onClick={handlePlayClick}
+            className="mb-3 px-6 py-2 bg-cyan-600 rounded hover:bg-cyan-700"
+          >
+            Play
+          </button>
+          {playingMsg && <p className="text-yellow-300 mb-4">Playing coming soon!</p>}
+
+          {/* Add to Favorites Button */}
+          <button
+            onClick={handleToggleFavorite}
+            className={`mb-8 px-6 py-2 rounded text-white ${isFavorite ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-600 hover:bg-gray-700'}`}
+          >
+            {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+          </button>
 
           <h2 className="text-xl font-semibold mb-2">Cast</h2>
           <ul className="mb-4 max-h-48 overflow-y-auto">

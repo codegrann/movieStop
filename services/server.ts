@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import connectDB from './config/db.ts';
 import authRoutes from './routes/authRoutes.ts';
 import movieRoutes from './routes/movieRoutes.ts';
+import userRoutes from './routes/userRoutes.ts';
 import passport from 'passport';
 import './utils/passportSetup.ts';
 
@@ -23,6 +24,7 @@ app.use(passport.initialize());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/movies', movieRoutes);
+app.use('/api/user', userRoutes);
 app.use(
   cors({
     origin: 'http://localhost:5173', // Frontend URL
