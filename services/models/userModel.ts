@@ -2,10 +2,10 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IUser extends Document {
   email: string;
-  password?: string; // optional for Google users
+  password?: string;
   name: string;
   googleId?: string;
-  favorites: number[]; // movie IDs user favorites
+  favorites: number[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -13,10 +13,10 @@ export interface IUser extends Document {
 const userSchema = new Schema<IUser>(
   {
     email: { type: String, required: true, unique: true },
-    password: { type: String },
+    password: { type: String }, // optional for Google users
     name: { type: String, required: true },
     googleId: { type: String, unique: true, sparse: true },
-    favorites: [{ type: Number }],
+    favorites: [{ type: Number }], // movie IDs user favorites
   },
   { timestamps: true }
 );

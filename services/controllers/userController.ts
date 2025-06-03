@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 
 export const addFavorite = async (req: Request, res: Response) => {
   try {
-    const userId = req.user.id; // from auth middleware
+    const userId = req.user.id;
     const movieId = Number(req.params.movieId);
 
     if (!movieId) {
@@ -60,7 +60,7 @@ export const getFavorites = async (req: Request, res: Response) => {
   }
 };
 
-// Update user account (name and/or password)
+// Update user account
 export const updateAccount = async (req: Request, res: Response) => {
   try {
     const userId = req.user.id;

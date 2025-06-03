@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 
 interface Movie {
   id: number;
@@ -35,7 +35,7 @@ export const useMovies = () => {
         ? `${API_BASE}/movies/search?query=${encodeURIComponent(query)}&page=${pageNum}`
         : `${API_BASE}/movies/popular?page=${pageNum}`;
 
-      const res = await axios.get<MoviesResponse>(url, {
+      const res = await API.get<MoviesResponse>(url, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
 

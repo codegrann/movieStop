@@ -3,7 +3,6 @@ import User from '../models/userModel.ts';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import { signToken } from '../utils/jwt.ts';
-import passport from 'passport';
 import axios from 'axios';
 
 dotenv.config();
@@ -22,15 +21,11 @@ export const registerUser = async (req: Request, res: Response) => {
 
     user = new User({ email, password: hashed, name });
     await user.save();
-    // console.log('My user is:', user);
 
-    // console.log('Before calling signToken');
     const token = signToken({ id: user._id, email: user.email });
-    // console.log('After calling signToken');
     
     res.status(201).json({ token, user: { id: user._id, email: user.email, name: user.name } });
   } catch (error) {
-    // res.status(500).json({ message: 'Server error' });
     res.status(500).json({ message: 'Server error', error: error.message || error.toString() });
 
   }
@@ -57,11 +52,11 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-// Google OAuth callback will be handled by passport middleware
+// passport middleware handles Google OAuth callback
 export const googleAuthCallback = async (req: any, res: any) => {
   // Passport attaches user to req.user
   if (!req.user) {
-    console.log('No user from Google OAuth');
+    // console.log('No user from Google OAuth');
     return res.redirect('/login?error=auth_failed');
   }
 
@@ -82,11 +77,12 @@ export const googleAuthCallback = async (req: any, res: any) => {
     const name = userInfo?.name || req.user.name || '';
 
     const token = signToken({ id: req.user._id, email: req.user.email, name });
-    console.log('Google Auth Generated Token:', token);
+    // console.log('Google Auth Generated Token:', token);
+
     // Redirect to frontend with token
     res.redirect(`${process.env.FRONTEND_URL}/?token=${token}`);
   } catch (error) {
-    console.error('Error fetching Google userinfo:', error);
+    // console.error('Error fetching Google userinfo:', error);
     // fallback
     const token = signToken({ id: req.user._id, email: req.user.email, name: req.user.name || '' });
     res.redirect(`${process.env.FRONTEND_URL}/?token=${token}`);

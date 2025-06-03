@@ -1,12 +1,20 @@
 import axios from 'axios';
-import { logoutUser } from '../hooks/useAuth'; // or your logout logic
+import { logoutUser } from '../hooks/useAuth';
 
 const API = axios.create({
   baseURL: 'http://localhost:5000/api',
 });
 
-// Create browser history to use navigate outside React components
-// const history = createBrowserHistory();
+API.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 API.interceptors.response.use(
   (response) => response,

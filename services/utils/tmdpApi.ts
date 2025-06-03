@@ -34,7 +34,7 @@ export const searchMovies = async (query: string, page = 1) => {
 export const fetchMovieDetails = async (movieId: string | number) => {
   const response = await tmdb.get(`/movie/${movieId}`, {
     params: {
-      append_to_response: 'credits,release_dates', // extra details
+      append_to_response: 'credits,release_dates',
     },
   });
   return response.data;

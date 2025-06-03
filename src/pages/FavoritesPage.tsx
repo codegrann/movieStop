@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import MovieList from '../components/movies/MovieList'; // reuse existing MovieList component
+import MovieList from '../components/movies/MovieList';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import API from '../services/api';
 

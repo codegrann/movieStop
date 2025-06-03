@@ -15,17 +15,13 @@ import HomePage from './pages/Home';
 import MovieDetailsPage from './pages/MovieDetails';
 import FavoritesPage from './pages/FavoritesPage';
 
-import { useAuth } from './hooks/useAuth'; // custom hook to get auth state
+import { useAuth } from './hooks/useAuth';
 import Navbar from './components/layout/Navbar';
-import LoadingSpinner from './components/common/LoadingSpinner';
 import AccountDetailsPage from './pages/AccountDetails';
 
 // Protected route component to guard private routes
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { user } = useAuth();
-  // if (user === null){
-  //   return <div className='pt-20'><LoadingSpinner /></div>
-  // }
 
   if (!user) {
     return <Navigate to="/login" replace />;
@@ -34,7 +30,7 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
 };
 
 const App = () => {
-  const { logout } = useAuth();
+  const { logoutUser } = useAuth();
 
 
   useEffect(() => {
@@ -43,7 +39,7 @@ const App = () => {
       const decoded: any = jwtDecode(token);
       if (decoded.exp * 1000 < Date.now()) {
         // Token expired
-        logout();
+        logoutUser();
       } else {
         return;
       }
@@ -82,7 +78,7 @@ const App = () => {
       }
     }, [location.search, loginWithToken, navigate, location.pathname]);
   
-    return null; // This component only handles login side effect
+    return null;
   };
 
   return (
@@ -102,9 +98,7 @@ const App = () => {
                 <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/movies/:id" element={<MovieDetailsPage />} />
-                  {/* favourites movie page */}
                   <Route path="/favorites" element={<FavoritesPage />} />
-                  {/* account details page */}
                   <Route path="/profile" element={<AccountDetailsPage />} />
                 </Routes>
               </>

@@ -30,12 +30,12 @@ const AccountDetailsPage = () => {
       
       setMessage('Account updated successfully!');
       setPassword('');
-      // Update user context  or local storage
+      // Update local storage
       localStorage.setItem('user', JSON.stringify({ ...user, name }));
      
     } catch (err: any) {
       setError(err.response?.data?.message);
-      console.log('Error updating account:', err);
+      // console.log('Error updating account:', err);
     }
   };
 

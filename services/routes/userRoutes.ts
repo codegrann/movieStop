@@ -4,7 +4,7 @@ import { addFavorite, removeFavorite, getFavorites, updateAccount, deleteAccount
 
 const router = express.Router();
 
-router.use(protect); // protect all user routes
+router.use(protect);
 
 router.post('/favorites/:movieId', addFavorite);
 router.delete('/favorites/:movieId', removeFavorite);

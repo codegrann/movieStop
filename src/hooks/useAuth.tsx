@@ -10,7 +10,6 @@ export const useAuth = () => {
       const { token: newToken, user: newUser } = await authService.login(email, password);
       login(newToken, newUser);
     } catch (error: any) {
-      // Throw the backend error message or a default one
       throw new Error(error.response?.data?.message || 'Login failed');
     }
   };

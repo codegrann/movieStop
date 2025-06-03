@@ -8,10 +8,6 @@ module.exports = {
         primary: '#1a202c', // Dark theme base
         secondary: '#2d3748', // Secondary color
         accent: '#4fd1c5', // Accent color for highlights
-        TK: {
-          background: '#131921',
-          default: '#131921',
-        },
       },
     },
   },

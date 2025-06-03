@@ -20,7 +20,7 @@ const HomePage = () => {
   // Movie click handler to navigate to details page
   const handleMovieSelect = useCallback((id: number) => {
     // window.location.href = `/movies/${id}`;
-      navigate(`/movies/${id}`);
+    navigate(`/movies/${id}`);
   }, [navigate]);
 
   // Infinite scroll handler

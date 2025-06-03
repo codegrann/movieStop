@@ -11,7 +11,6 @@ const Navbar = () => {
   const menuItems = [
     { label: 'Account', icon: <User className="w-5 h-5 mr-2" />, onClick: () => navigate('/profile') },
     { label: 'Favorites', icon: <Heart className="w-5 h-5 mr-2" />, onClick: () => navigate('/favorites') },
-    // Add more items here
   ];
 
   return (
@@ -90,7 +89,6 @@ const Navbar = () => {
         </nav>
       </div>
 
-      {/* Optional overlay when sidebar open */}
       {sidebarOpen && (
         <div
           onClick={() => setSidebarOpen(false)}

@@ -89,9 +89,7 @@ const MovieDetailsPage = () => {
         await API.delete(`/user/favorites/${movie.id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        // Update UI & user context
         setFavorites(prev => prev.filter(favId => favId !== movie.id));
-        // Ideally update user.favorites in context too (trigger re-fetch or update state)
       } else {
         // Add favorite
         await API.post(`/user/favorites/${movie.id}`, {}, {
@@ -99,7 +97,6 @@ const MovieDetailsPage = () => {
         });
         setFavorites(prev => prev.filter(favId => favId !== movie.id));
         navigate('/favorites');
-        // Update user.favorites in context similarly
       }
     } catch (err) {
       console.error('Failed to update favorite', err);
