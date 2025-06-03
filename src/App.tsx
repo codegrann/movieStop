@@ -18,6 +18,7 @@ import FavoritesPage from './pages/FavoritesPage';
 import { useAuth } from './hooks/useAuth'; // custom hook to get auth state
 import Navbar from './components/layout/Navbar';
 import LoadingSpinner from './components/common/LoadingSpinner';
+import AccountDetailsPage from './pages/AccountDetails';
 
 // Protected route component to guard private routes
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
@@ -103,6 +104,8 @@ const App = () => {
                   <Route path="/movies/:id" element={<MovieDetailsPage />} />
                   {/* favourites movie page */}
                   <Route path="/favorites" element={<FavoritesPage />} />
+                  {/* account details page */}
+                  <Route path="/profile" element={<AccountDetailsPage />} />
                 </Routes>
               </>
             </ProtectedRoute>
