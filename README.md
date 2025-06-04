@@ -59,6 +59,6 @@ MIT License
 
 ## Contact
 
-Your Name — [renderer721@gmail.com](mailto:renderer721@gmail.com)
+Hillary Omondi — [hillaryomondi.dev@gmail.com](mailto:hillaryomondi.dev@gmail.com)
 
 Project Link: https://github.com/codegrann/movieStop
