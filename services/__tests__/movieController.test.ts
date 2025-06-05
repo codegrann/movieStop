@@ -1,17 +1,14 @@
-import { searchMovies, getMovieDetails, getPopularMovies } from '../controllers/movieController';
-// import { searchMovies, fetchMovieDetails, fetchPopularMovies } from '../utils/tmdpApi';
-import * as tmdbApi from '../utils/tmdpApi';
+import { getPopularMovies, searchMovies, getMovieDetails } from '../controllers/movieController';
+import * as tmdpApi from '../utils/tmdpApi.ts';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-// jest.mock('../utils/tmdpApi', () => ({
-//   searchMovies: jest.fn(),
-//   fetchMovieDetails: jest.fn(),
-//   fetchPopularMovies: jest.fn(),
-// }));
-
-jest.mock('../utils/tmdpApi');
+jest.mock('../utils/tmdpApi.ts', () => ({
+  fetchPopularMovies: jest.fn(),
+  searchMovies: jest.fn(),
+  fetchMovieDetails: jest.fn(),
+}));
 
 const mockRes = () => {
   const res: any = {};
@@ -20,41 +17,52 @@ const mockRes = () => {
   return res;
 };
 
-describe('searchMovies', () => {
-  it('should fetch and return movies', async () => {
-    const req: any = {};
+describe('getPopularMovies', () => {
+  it('should fetch and return popular movies', async () => {
+    const req: any = { query: {} };
     const res = mockRes();
 
-    (tmdbApi.searchMovies as jest.Mock).mockResolvedValue([{ id: 1, title: 'Movie' }]);
+    (tmdpApi.fetchPopularMovies as jest.Mock).mockResolvedValue([{ id: 1, title: 'Popular Movie' }]);
+
+    await getPopularMovies(req, res);
+
+    expect(res.json).toHaveBeenCalledWith([{ id: 1, title: 'Popular Movie' }]);
+  });
+});
+
+describe('searchMovies', () => {
+  it('should fetch and return search results', async () => {
+    const req: any = { query: { query: 'Batman' } };
+    const res = mockRes();
+
+    (tmdpApi.searchMovies as jest.Mock).mockResolvedValue([{ id: 2, title: 'Batman Begins' }]);
 
     await searchMovies(req, res);
 
-    expect(res.json).toHaveBeenCalledWith([{ id: 1, title: 'Movie' }]);
+    expect(res.json).toHaveBeenCalledWith([{ id: 2, title: 'Batman Begins' }]);
+  });
+
+  it('should return error if search query is missing', async () => {
+    const req: any = { query: {} };
+    const res = mockRes();
+
+    await searchMovies(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({ message: 'Search query required' });
   });
 });
 
 describe('getMovieDetails', () => {
   it('should fetch and return movie details', async () => {
-    const req: any = { params: { id: '123' } };
+    const req: any = { params: { id: '42' } };
     const res = mockRes();
 
-    (tmdbApi.fetchMovieDetails as jest.Mock).mockResolvedValue({ id: '123', title: 'Title' });
+    (tmdpApi.fetchMovieDetails as jest.Mock).mockResolvedValue({ id: '42', title: 'The Answer' });
 
     await getMovieDetails(req, res);
 
-    expect(res.json).toHaveBeenCalledWith({ id: '123', title: 'Title' });
+    expect(res.json).toHaveBeenCalledWith({ id: '42', title: 'The Answer' });
   });
 });
 
-describe('getPopularMovies', () => {
-  it('should fetch and return recommendations', async () => {
-    const req: any = { params: { id: '123' } };
-    const res = mockRes();
-
-    (tmdbApi.fetchPopularMovies as jest.Mock).mockResolvedValue([{ id: 456, title: 'Rec' }]);
-
-    await getPopularMovies(req, res);
-
-    expect(res.json).toHaveBeenCalledWith([{ id: 456, title: 'Rec' }]);
-  });
-});
