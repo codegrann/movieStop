@@ -24,31 +24,64 @@ describe('registerUser', () => {
     (User.findOne as jest.Mock).mockResolvedValue(null);
     (bcrypt.genSalt as jest.Mock).mockResolvedValue('salt');
     (bcrypt.hash as jest.Mock).mockResolvedValue('hashedPass');
-    (User.prototype.save as jest.Mock) = jest.fn().mockResolvedValue(undefined);
+  
+    const mockUser = {
+      _id: '1',
+      email: 'test@test.com',
+      name: 'Tester',
+      save: jest.fn().mockResolvedValue(undefined),
+    };
+    (User as unknown as jest.Mock).mockImplementation(() => mockUser);
+  
     (signToken as jest.Mock).mockReturnValue('token123');
-
+  
     const req = mockReq({ email: 'test@test.com', password: 'pass', name: 'Tester' });
     const res = mockRes();
-
+  
     await registerUser(req, res);
-
+  
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.json).toHaveBeenCalledWith({
       token: 'token123',
-      user: expect.objectContaining({ email: 'test@test.com', name: 'Tester' })
+      user: { id: '1', email: 'test@test.com', name: 'Tester' },
     });
   });
-
+  
   it('should return error if user exists', async () => {
     (User.findOne as jest.Mock).mockResolvedValue({});
-
+  
     const req = mockReq({ email: 'test@test.com', password: 'pass', name: 'Tester' });
     const res = mockRes();
-
+  
     await registerUser(req, res);
-
+  
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.json).toHaveBeenCalledWith({ message: 'User already exists' });
+  });
+  
+  it('should return 400 if fields are missing', async () => {
+    const req = mockReq({ email: '', password: '', name: '' });
+    const res = mockRes();
+  
+    await registerUser(req, res);
+  
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({ message: 'Please enter all fields' });
+  });
+  
+  it('should return 500 on server error', async () => {
+    (User.findOne as jest.Mock).mockRejectedValue(new Error('DB down'));
+  
+    const req = mockReq({ email: 'test@test.com', password: 'pass', name: 'Tester' });
+    const res = mockRes();
+  
+    await registerUser(req, res);
+  
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({
+      message: 'Server error',
+      error: 'DB down',
+    });
   });
 });
 

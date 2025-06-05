@@ -49,19 +49,50 @@ describe('updateAccount', () => {
     await updateAccount(req, res);
 
     expect(save).toHaveBeenCalled();
-    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ name: 'New' }));
-  });
+    expect(res.json).toHaveBeenCalledWith({ message: 'Account updated successfully' });
+});
 });
 
 describe('deleteAccount', () => {
   it('should delete user and respond with message', async () => {
+    const deleteOne = jest.fn().mockResolvedValue(undefined);
+    const mockUser = { deleteOne };
     const req: any = { user: { id: '123' } };
     const res = mockRes();
-
-    (User.deleteOne as jest.Mock).mockResolvedValue({ deletedCount: 1 });
-
+  
+    (User.findById as jest.Mock).mockResolvedValue(mockUser);
+  
     await deleteAccount(req, res);
-
-    expect(res.json).toHaveBeenCalledWith({ message: 'User removed' });
+  
+    expect(deleteOne).toHaveBeenCalled();
+    expect(res.json).toHaveBeenCalledWith({ message: 'Account deleted successfully' });
+});
+  
+  it('should return error if user not found', async () => {
+    const req: any = { user: { id: '123' } };
+    const res = mockRes();
+  
+    (User.findById as jest.Mock).mockResolvedValue(null);
+  
+    await deleteAccount(req, res);
+  
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.json).toHaveBeenCalledWith({ message: 'User not found' });
+  });
+  
+  it('should handle server error', async () => {
+    const req: any = { user: { id: '123' } };
+    const res = mockRes();
+  
+    (User.findById as jest.Mock).mockRejectedValue(new Error('DB fail'));
+  
+    await deleteAccount(req, res);
+  
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({
+      message: 'Failed to delete account',
+      error: 'DB fail',
+    });
   });
 });
+  

@@ -1,10 +1,17 @@
-import { getMovies, getMovieDetails, getMovieRecommendations } from '../controllers/movieController';
-import { fetchMovies, fetchMovieDetails, fetchMovieRecommendations } from '../utils/tmdpApi';
+import { searchMovies, getMovieDetails, getPopularMovies } from '../controllers/movieController';
+// import { searchMovies, fetchMovieDetails, fetchPopularMovies } from '../utils/tmdpApi';
+import * as tmdbApi from '../utils/tmdpApi';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-jest.mock('../utils/tmdbApi');
+// jest.mock('../utils/tmdpApi', () => ({
+//   searchMovies: jest.fn(),
+//   fetchMovieDetails: jest.fn(),
+//   fetchPopularMovies: jest.fn(),
+// }));
+
+jest.mock('../utils/tmdpApi');
 
 const mockRes = () => {
   const res: any = {};
@@ -13,14 +20,14 @@ const mockRes = () => {
   return res;
 };
 
-describe('getMovies', () => {
+describe('searchMovies', () => {
   it('should fetch and return movies', async () => {
     const req: any = {};
     const res = mockRes();
 
-    (fetchMovies as jest.Mock).mockResolvedValue([{ id: 1, title: 'Movie' }]);
+    (tmdbApi.searchMovies as jest.Mock).mockResolvedValue([{ id: 1, title: 'Movie' }]);
 
-    await getMovies(req, res);
+    await searchMovies(req, res);
 
     expect(res.json).toHaveBeenCalledWith([{ id: 1, title: 'Movie' }]);
   });
@@ -31,7 +38,7 @@ describe('getMovieDetails', () => {
     const req: any = { params: { id: '123' } };
     const res = mockRes();
 
-    (fetchMovieDetails as jest.Mock).mockResolvedValue({ id: '123', title: 'Title' });
+    (tmdbApi.fetchMovieDetails as jest.Mock).mockResolvedValue({ id: '123', title: 'Title' });
 
     await getMovieDetails(req, res);
 
@@ -39,14 +46,14 @@ describe('getMovieDetails', () => {
   });
 });
 
-describe('getMovieRecommendations', () => {
+describe('getPopularMovies', () => {
   it('should fetch and return recommendations', async () => {
     const req: any = { params: { id: '123' } };
     const res = mockRes();
 
-    (fetchMovieRecommendations as jest.Mock).mockResolvedValue([{ id: 456, title: 'Rec' }]);
+    (tmdbApi.fetchPopularMovies as jest.Mock).mockResolvedValue([{ id: 456, title: 'Rec' }]);
 
-    await getMovieRecommendations(req, res);
+    await getPopularMovies(req, res);
 
     expect(res.json).toHaveBeenCalledWith([{ id: 456, title: 'Rec' }]);
   });

@@ -6,6 +6,8 @@ dotenv.config();
 
 jest.mock('jsonwebtoken', () => ({
     verify: jest.fn(),
+    sign: jest.fn(),
+    decode: jest.fn(),
   }));
   
 describe('signToken', () => {
