@@ -10,7 +10,8 @@
     "prettier": "prettier --write {src/**/*.tsx,src/**/*.ts}",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "vitest run"
+    "test": "vitest run && npm run test:backend",
+    "test:backend": "NODE_ENV=test vitest run --dir services"
 
   },
   "dependencies": {
