@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "dist/server.js",
   "scripts": {
-    "start": "ts-node-dev --respawn --transpile-only server.ts"
+    "start": "ts-node-dev --respawn --transpile-only server.ts",
+    "test": "jest"
   },
   "dependencies": {
     "axios": "^1.9.0",
