@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -67,6 +67,7 @@ const App = () => {
             id: decoded.id,
             email: decoded.email,
             name: decoded.name || '',
+            favorites: decoded.favorites || [],
           };
   
           loginWithToken(token, user);

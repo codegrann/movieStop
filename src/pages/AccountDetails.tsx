@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import API from '../services/api';
 
 const AccountDetailsPage = () => {
-  const { user, token, loginUser, logoutUser } = useAuth();
+  const { user, token, logoutUser } = useAuth();
   const [name, setName] = useState(user?.name || '');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState<string | null>(null);

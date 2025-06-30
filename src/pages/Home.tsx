@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMovies } from '../hooks/useMovies';
 import MovieList from '../components/movies/MovieList';

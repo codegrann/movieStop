@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import MovieList from '../components/movies/MovieList';
@@ -7,7 +7,7 @@ import API from '../services/api';
 
 const FavoritesPage = () => {
   const { token } = useAuth();
-  const [favorites, setFavorites] = useState<number[]>([]);
+  const [, setFavorites] = useState<number[]>([]);
   const [movies, setMovies] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

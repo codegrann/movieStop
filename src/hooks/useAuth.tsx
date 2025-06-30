@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import authService from '../services/authService';
+import { User } from '../types';
 
 export const useAuth = () => {
   const { user, token, login, logout } = useContext(AppContext);
@@ -8,7 +9,7 @@ export const useAuth = () => {
   const loginUser = async (email: string, password: string) => {
     try {
       const { token: newToken, user: newUser } = await authService.login(email, password);
-      login(newToken, newUser);
+      login(newToken, { ...newUser, favorites: [] });
     } catch (error: any) {
       throw new Error(error.response?.data?.message || 'Login failed');
     }
@@ -21,7 +22,7 @@ export const useAuth = () => {
   const registerUser = async (email: string, password: string, name: string) => {
     try {
       const { token: newToken, user: newUser } = await authService.register(email, password, name);
-      login(newToken, newUser);
+      login(newToken, { ...newUser, favorites: [] });
     } catch (error: any) {
       throw new Error(error.response?.data?.message || 'Registration failed');
     }

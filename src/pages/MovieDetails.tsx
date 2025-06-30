@@ -1,34 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import { useAuth } from '../hooks/useAuth';
 import API from '../services/api';
-
-interface MovieDetails {
-  id: number;
-  title: string;
-  overview: string;
-  poster_path: string | null;
-  release_date: string;
-  vote_average: number;
-  genres: { id: number; name: string }[];
-  runtime: number;
-  credits: {
-    cast: { id: number; name: string; character: string; profile_path: string | null }[];
-    crew: { id: number; name: string; job: string }[];
-  };
-}
+import { Movie } from '../types';
 
 const IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
 
 const MovieDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
-  const [movie, setMovie] = useState<MovieDetails | null>(null);
+  const [movie, setMovie] = useState<Movie | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [playingMsg, setPlayingMsg] = useState(false);
   const [favorites, setFavorites] = useState<number[]>([]);
-  // const [isFavorite, setIsFavorite] = useState(false);
   const { token, user } = useAuth();
   const navigate = useNavigate();
 
@@ -52,10 +37,9 @@ const MovieDetailsPage = () => {
     fetchDetails();
   }, [id, token]);
 
-  // Check if movie is favorite
   useEffect(() => {
     if (user && user.favorites && id) {
-      setIsFavorite(user.favorites.includes(Number(id)));
+      setFavorites(user.favorites);
     }
   }, [user, id]);
 
@@ -89,13 +73,17 @@ const MovieDetailsPage = () => {
         await API.delete(`/user/favorites/${movie.id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setFavorites(prev => prev.filter(favId => favId !== movie.id));
+        setFavorites((prev) => prev.filter((favId) => favId !== movie.id));
       } else {
         // Add favorite
-        await API.post(`/user/favorites/${movie.id}`, {}, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setFavorites(prev => prev.filter(favId => favId !== movie.id));
+        await API.post(
+          `/user/favorites/${movie.id}`,
+          {},
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setFavorites((prev) => [...prev, movie.id]);
         navigate('/favorites');
       }
     } catch (err) {
@@ -103,7 +91,7 @@ const MovieDetailsPage = () => {
     }
   };
 
-  if (loading) return <div className='pt-24'><LoadingSpinner /></div>;
+  if (loading) return <div className="pt-24"><LoadingSpinner /></div>;
   if (error) return <p className="text-center text-red-500 pt-20 mt-10">{error}</p>;
   if (!movie) return <p className="text-center text-white pt-20 mt-10">Movie not found</p>;
 
