@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import * as tmdpApi from '../utils/tmdpApi.ts';
+import * as tmdpApi from '../utils/tmdpApi';
 
 export const getPopularMovies = async (req: Request, res: Response) => {
   try {

@@ -3,7 +3,7 @@ import {
   registerUser,
   loginUser,
   googleAuthCallback,
-} from '../controllers/authController.ts';
+} from '../controllers/authController';
 import passport from 'passport';
 
 const authRoutes = express.Router();

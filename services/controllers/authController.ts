@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
-import User from '../models/userModel.ts';
+import User from '../models/userModel';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
-import { signToken } from '../utils/jwt.ts';
+import { signToken } from '../utils/jwt';
 import axios from 'axios';
 
 dotenv.config();
@@ -25,7 +25,7 @@ export const registerUser = async (req: Request, res: Response) => {
     const token = signToken({ id: user._id, email: user.email });
     
     res.status(201).json({ token, user: { id: user._id, email: user.email, name: user.name } });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ message: 'Server error', error: error.message || error.toString() });
 
   }
@@ -47,13 +47,13 @@ export const loginUser = async (req: Request, res: Response) => {
 
     const token = signToken({ id: user._id, email: user.email });
     res.json({ token, user: { id: user._id, email: user.email, name: user.name } });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ message: 'Server error', error: error.message || error.toString() });
   }
 };
 
 // passport middleware handles Google OAuth callback
-export const googleAuthCallback = async (req: any, res: any) => {
+export const googleAuthCallback = async (req: Request, res: Response) => {
   // Passport attaches user to req.user
   if (!req.user) {
     // console.log('No user from Google OAuth');
@@ -61,7 +61,7 @@ export const googleAuthCallback = async (req: any, res: any) => {
   }
 
   try {
-    const accessToken = req.user.accessToken;
+    const accessToken = (req.user as any).accessToken;
     let userInfo;
 
     if (accessToken) {
@@ -74,9 +74,9 @@ export const googleAuthCallback = async (req: any, res: any) => {
       userInfo = response.data; 
     }
 
-    const name = userInfo?.name || req.user.name || '';
+    const name = userInfo?.name || (req.user as any).name || '';
 
-    const token = signToken({ id: req.user._id, email: req.user.email, name });
+    const token = signToken({ id: (req.user as any)._id, email: (req.user as any).email, name });
     // console.log('Google Auth Generated Token:', token);
 
     // Redirect to frontend with token
@@ -84,7 +84,7 @@ export const googleAuthCallback = async (req: any, res: any) => {
   } catch (error) {
     // console.error('Error fetching Google userinfo:', error);
     // fallback
-    const token = signToken({ id: req.user._id, email: req.user.email, name: req.user.name || '' });
+    const token = signToken({ id: (req.user as any)._id, email: (req.user as any).email, name: (req.user as any).name || '' });
     res.redirect(`${process.env.FRONTEND_URL}/?token=${token}`);
   }
 };

@@ -1,6 +1,6 @@
 import express from 'express';
-import { protect } from '../middleware/authMiddleware.ts';
-import { addFavorite, removeFavorite, getFavorites, updateAccount, deleteAccount } from '../controllers/userController.ts';
+import { protect } from '../middleware/authMiddleware';
+import { addFavorite, removeFavorite, getFavorites, updateAccount, deleteAccount } from '../controllers/userController';
 
 const router = express.Router();
 

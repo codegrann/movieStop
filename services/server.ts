@@ -1,10 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import connectDB from './config/db.ts';
-import authRoutes from './routes/authRoutes.ts';
-import movieRoutes from './routes/movieRoutes.ts';
-import userRoutes from './routes/userRoutes.ts';
+import connectDB from './config/db';
+import authRoutes from './routes/authRoutes';
+import movieRoutes from './routes/movieRoutes';
+import userRoutes from './routes/userRoutes';
 import passport from 'passport';
 import './utils/passportSetup.ts';
 
