@@ -1,6 +1,7 @@
-import axios from 'axios';
+// import axios from 'axios';
+import API from './api';
 
-const API_URL = `${import.meta.env.VITE_BACKEND_URL}/auth`;
+// const API_URL = `${import.meta.env.VITE_BACKEND_URL}/auth`;
 
 interface User {
   id: string;
@@ -14,12 +15,12 @@ interface LoginResponse {
 }
 
 const login = async (email: string, password: string): Promise<LoginResponse> => {
-  const response = await axios.post(`${API_URL}/login`, { email, password });
+  const response = await API.post(`/login`, { email, password });
   return response.data;
 };
 
 const register = async (email: string, password: string, name: string): Promise<LoginResponse> => {
-  const response = await axios.post(`${API_URL}/register`, { email, password, name });
+  const response = await API.post(`/register`, { email, password, name });
   return response.data;
 };
 
