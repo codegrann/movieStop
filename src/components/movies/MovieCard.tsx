@@ -11,7 +11,9 @@ interface MovieCardProps {
   onClick: (id: number) => void;
 }
 
-const IMAGE_BASE = 'https://image.tmdb.org/t/p/w300';
+// const IMAGE_BASE = 'https://image.tmdb.org/t/p/w300';
+// import image_base from .env file
+const IMAGE_BASE = import.meta.env.VITE_IMAGE_BASE;
 
 const MovieCard: React.FC<MovieCardProps> = ({ movie, onClick }) => {
   return (

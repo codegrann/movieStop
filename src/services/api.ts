@@ -1,8 +1,7 @@
 import axios from 'axios';
-// https://movie-stop-umber.vercel.app/login
 
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: import.meta.env.VITE_BACKEND_URL,
 });
 
 API.interceptors.request.use(

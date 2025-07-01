@@ -25,7 +25,7 @@ const LoginPage = () => {
       <h1 className="text-2xl sm:text-3xl font-bold text-center mb-4">Welcome to MovieStop</h1>
       <LoginForm onLogin={handleLogin} error={error} />
       <a
-        href="http://localhost:5000/api/auth/google"
+        href={`${import.meta.env.VITE_BACKEND_URL}/auth/google`}
         className="block text-center underline text-blue-300"
       >
         Sign in with Google

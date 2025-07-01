@@ -19,14 +19,14 @@ const FavoritesPage = () => {
       setError(null);
       try {
         // Get favorite movie IDs
-        const favRes = await API.get('http://localhost:5000/api/user/favorites', {
+        const favRes = await API.get('/user/favorites', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setFavorites(favRes.data.favorites);
 
         // Fetch details for each favorite movie
         const movieDetailsPromises = favRes.data.favorites.map((id: number) =>
-          API.get(`http://localhost:5000/api/movies/${id}`, {
+          API.get(`/movies/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
           })
         );

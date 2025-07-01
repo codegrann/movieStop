@@ -16,7 +16,7 @@ interface MoviesResponse {
   total_pages: number;
 }
 
-const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000/api';
+const API_BASE = import.meta.env.VITE_BACKEND_URL;
 
 export const useMovies = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
