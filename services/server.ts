@@ -6,7 +6,7 @@ import authRoutes from './routes/authRoutes';
 import movieRoutes from './routes/movieRoutes';
 import userRoutes from './routes/userRoutes';
 import passport from 'passport';
-import './utils/passportSetup.ts';
+import './utils/passportSetup';
 
 dotenv.config();
 

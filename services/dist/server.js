@@ -11,7 +11,7 @@ const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
 const movieRoutes_1 = __importDefault(require("./routes/movieRoutes"));
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 const passport_1 = __importDefault(require("passport"));
-require("./utils/passportSetup.ts");
+require("./utils/passportSetup");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 5000;
