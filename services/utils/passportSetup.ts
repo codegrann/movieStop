@@ -1,9 +1,6 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import User from '../models/userModel.ts';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import User, { IUser } from '../models/userModel';
 
 passport.use(
   new GoogleStrategy(
@@ -35,9 +32,12 @@ passport.use(
           await user.save();
         }
 
-        user.accessToken = accessToken;
+        // Attach accessToken to the user object for this request
+        const userWithToken = user.toObject() as IUser & {
+          accessToken: string };
+        userWithToken.accessToken = accessToken;
 
-        done(null, user);
+        done(null, userWithToken);
       } catch (err) {
         done(err, undefined);
       }
