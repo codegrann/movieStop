@@ -33,6 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.userSchema = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const userSchema = new mongoose_1.Schema({
     email: { type: String, required: true, unique: true },
@@ -41,5 +42,6 @@ const userSchema = new mongoose_1.Schema({
     googleId: { type: String, unique: true, sparse: true },
     favorites: [{ type: Number }], // movie IDs user favorites
 }, { timestamps: true });
+exports.userSchema = userSchema;
 const User = mongoose_1.default.model('User', userSchema);
 exports.default = User;

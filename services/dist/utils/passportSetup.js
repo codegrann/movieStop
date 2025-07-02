@@ -5,9 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const passport_1 = __importDefault(require("passport"));
 const passport_google_oauth20_1 = require("passport-google-oauth20");
-const userModel_ts_1 = __importDefault(require("../models/userModel.ts"));
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
+const userModel_1 = __importDefault(require("../models/userModel"));
 passport_1.default.use(new passport_google_oauth20_1.Strategy({
     clientID: process.env.GOOGLE_CLIENT_ID || '',
     clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
@@ -17,12 +15,12 @@ passport_1.default.use(new passport_google_oauth20_1.Strategy({
         const email = profile.emails?.[0].value;
         if (!email)
             return done(null, false, { message: 'No email from Google' });
-        let user = await userModel_ts_1.default.findOne({ googleId: profile.id });
+        let user = await userModel_1.default.findOne({ googleId: profile.id });
         if (!user) {
-            user = await userModel_ts_1.default.findOne({ email });
+            user = await userModel_1.default.findOne({ email });
         }
         if (!user) {
-            user = new userModel_ts_1.default({
+            user = new userModel_1.default({
                 googleId: profile.id,
                 email,
                 name: profile.displayName,
@@ -34,8 +32,10 @@ passport_1.default.use(new passport_google_oauth20_1.Strategy({
             user.googleId = profile.id;
             await user.save();
         }
-        user.accessToken = accessToken;
-        done(null, user);
+        // Attach accessToken to the user object for this request
+        const userWithToken = user.toObject();
+        userWithToken.accessToken = accessToken;
+        done(null, userWithToken);
     }
     catch (err) {
         done(err, undefined);
@@ -43,6 +43,6 @@ passport_1.default.use(new passport_google_oauth20_1.Strategy({
 }));
 passport_1.default.serializeUser((user, done) => done(null, user._id));
 passport_1.default.deserializeUser(async (id, done) => {
-    const user = await userModel_ts_1.default.findById(id);
+    const user = await userModel_1.default.findById(id);
     done(null, user);
 });

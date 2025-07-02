@@ -37,7 +37,7 @@ passport.use(
           accessToken: string };
         userWithToken.accessToken = accessToken;
 
-        done(null, userWithToken);
+        done(null, userWithToken as any);
       } catch (err) {
         done(err, undefined);
       }
@@ -48,5 +48,5 @@ passport.use(
 passport.serializeUser((user: any, done) => done(null, user._id));
 passport.deserializeUser(async (id, done) => {
   const user = await User.findById(id);
-  done(null, user);
+  done(null, user as any);
 });
