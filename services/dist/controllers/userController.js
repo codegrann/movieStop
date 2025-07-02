@@ -8,7 +8,7 @@ const userModel_1 = __importDefault(require("../models/userModel"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const addFavorite = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user?.id;
         const movieId = Number(req.params.movieId);
         if (!movieId) {
             return res.status(400).json({ message: 'Invalid movie ID' });
@@ -29,7 +29,7 @@ const addFavorite = async (req, res) => {
 exports.addFavorite = addFavorite;
 const removeFavorite = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user?.id;
         const movieId = Number(req.params.movieId);
         if (!movieId) {
             return res.status(400).json({ message: 'Invalid movie ID' });
@@ -48,7 +48,7 @@ const removeFavorite = async (req, res) => {
 exports.removeFavorite = removeFavorite;
 const getFavorites = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user?.id;
         const user = await userModel_1.default.findById(userId);
         if (!user)
             return res.status(404).json({ message: 'User not found' });
@@ -63,7 +63,7 @@ exports.getFavorites = getFavorites;
 // Update user account
 const updateAccount = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user?.id;
         const { name, password } = req.body;
         const user = await userModel_1.default.findById(userId);
         if (!user)
@@ -86,7 +86,7 @@ exports.updateAccount = updateAccount;
 // Delete user account
 const deleteAccount = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user?.id;
         const user = await userModel_1.default.findById(userId);
         if (!user)
             return res.status(404).json({ message: 'User not found' });
