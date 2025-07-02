@@ -12,7 +12,8 @@ passport.use(
     async (accessToken, refreshToken, profile, done) => {
       try {
         const email = profile.emails?.[0].value;
-        if (!email) return done(null, false, { message: 'No email from Google' });
+        if (!email)
+          return done(null, false, { message: 'No email from Google' });
 
         let user = await User.findOne({ googleId: profile.id });
         if (!user) {
@@ -34,7 +35,8 @@ passport.use(
 
         // Attach accessToken to the user object for this request
         const userWithToken = user.toObject() as IUser & {
-          accessToken: string };
+          accessToken: string;
+        };
         userWithToken.accessToken = accessToken;
 
         done(null, userWithToken as any);
