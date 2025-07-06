@@ -22,16 +22,57 @@ import AccountDetailsPage from './pages/AccountDetails';
 // Protected route component to guard private routes
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { user } = useAuth();
+  const location = useLocation();
 
   if (!user) {
+    // store intended path in sessionstorage
+    sessionStorage.setItem('redirectAfterLogin', location.pathname);
+
     return <Navigate to="/login" replace />;
   }
   return children;
 };
+const AuthHandler = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { loginWithToken } = useAuth();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const token = params.get('token');
+    // console.log('params to use to decode', params);
+    // console.log('Token to decode', token);
+
+    // Check if token is present
+    if (token) {
+      try {
+        const decoded: any = jwtDecode(token);
+        console.log('Decoded token:', decoded);
+
+        const user = {
+          id: decoded.id,
+          email: decoded.email,
+          name: decoded.name || '',
+          favorites: decoded.favorites || [],
+        };
+
+        loginWithToken(token, user);
+
+        const redirectPath = sessionStorage.getItem('redirectAfterLogin') || '/';
+        sessionStorage.removeItem('redirectAfterLogin');
+        navigate(redirectPath, { replace: true });
+        // navigate(location.pathname, { replace: true });
+      } catch (e) {
+        console.error('Invalid token:', e);
+      }
+    }
+  }, [location.search, loginWithToken, navigate, location.pathname]);
+
+  return null;
+};
 
 const App = () => {
   const { logoutUser } = useAuth();
-
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -46,68 +87,61 @@ const App = () => {
     }
   }, []);
 
-  const AuthHandler = () => {
-    const location = useLocation();
-    const navigate = useNavigate();
-    const { loginWithToken } = useAuth();
-  
-    useEffect(() => {
-      const params = new URLSearchParams(location.search);
-      const token = params.get('token');
-      console.log('params to use to decode', params);
-      console.log('Token to decode', token);
-  
-      // Check if token is present
-      if (token) {
-        try {
-          const decoded: any = jwtDecode(token);
-          console.log('Decoded token:', decoded);
-  
-          const user = {
-            id: decoded.id,
-            email: decoded.email,
-            name: decoded.name || '',
-            favorites: decoded.favorites || [],
-          };
-  
-          loginWithToken(token, user);
-          console.log('User logged in:', user);
-          navigate(location.pathname, { replace: true });
-        } catch (e) {
-          console.error('Invalid token:', e);
-        }
-      }
-    }, [location.search, loginWithToken, navigate, location.pathname]);
-  
-    return null;
-  };
-
   return (
     <Router>
       <AuthHandler />
       <Routes>
-        {/* Public routes */}
+        {/* Public */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
+        {/* Protected */}
         <Route
-          path="/*"
+          path="/"
           element={
             <ProtectedRoute>
               <>
                 <Navbar />
-                <Routes>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/movies/:id" element={<MovieDetailsPage />} />
-                  <Route path="/favorites" element={<FavoritesPage />} />
-                  <Route path="/profile" element={<AccountDetailsPage />} />
-                </Routes>
+                <HomePage />
+              </>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/movies/:id"
+          element={
+            <ProtectedRoute>
+              <>
+                <Navbar />
+                <MovieDetailsPage />
+              </>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/favorites"
+          element={
+            <ProtectedRoute>
+              <>
+                <Navbar />
+                <FavoritesPage />
+              </>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <>
+                <Navbar />
+                <AccountDetailsPage />
               </>
             </ProtectedRoute>
           }
         />
 
-        {/* Redirect any unknown route to home */}
+        {/* Catch-all */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
