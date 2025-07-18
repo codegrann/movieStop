@@ -7,16 +7,21 @@ import { useAuth } from '../hooks/useAuth';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
 const HomePage = () => {
-  const { movies, loading, error, setSearchQuery, loadMore, hasMore } = useMovies();
-  // const { user } = useAuth();
+  const { movies, loading, error, setSearchQuery, loadMore, hasMore } =
+    useMovies();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   // Movie click handler to navigate to details page
-  const handleMovieSelect = useCallback((id: number) => {
-    // window.location.href = `/movies/${id}`;
-    navigate(`/movies/${id}`);
-  },
-  [navigate]
+  const handleMovieSelect = useCallback(
+    (id: number) => {
+      if (user) {
+        navigate(`/movies/${id}`);
+      } else {
+        navigate('/login');
+      }
+    },
+    [user, navigate]
   );
 
   // Infinite scroll handler
