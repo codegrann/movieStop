@@ -3,14 +3,13 @@ import React, { useState } from 'react';
 interface Props {
   onRegister: (email: string, password: string, name: string) => void;
   error: string | null;
+  loading: boolean;
 }
 
-const RegisterForm = ({ onRegister, error }: Props) => {
+const RegisterForm = ({ onRegister, error, loading }: Props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [clicked, setClicked] = useState(false);
-
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,10 +53,10 @@ const RegisterForm = ({ onRegister, error }: Props) => {
 
       <button
         type="submit"
-        className="w-full py-3 bg-cyan-600 rounded hover:bg-cyan-500 transition-colors font-semibold"
-        onClick={() => setClicked(true)}
+        className="w-full py-3 bg-cyan-600 rounded hover:bg-cyan-500 transition-colors font-semibold disabled:bg-gray-500"
+        disabled={loading}
       >
-        {clicked ? <p>Please wait...</p> : 'Register'}
+        {loading ? 'Please wait...' : 'Register'}
       </button>
     </form>
   );

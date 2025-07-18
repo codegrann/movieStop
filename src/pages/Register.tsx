@@ -7,23 +7,27 @@ const RegisterPage = () => {
   const { user, registerUser } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   if (user) return <Navigate to="/" replace />;
 
   const handleRegister = async (email: string, password: string, name: string) => {
     setError(null);
+    setLoading(true);
     try {
       await registerUser(email, password, name);
       navigate('/login');
-    } catch (err: any){
+    } catch (err: any) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col gap-6 items-center justify-center bg-gray-900 text-white p-4">
       <h1 className="text-2xl sm:text-3xl font-bold text-center mb-4">Welcome to MovieStop</h1>
-      <RegisterForm onRegister={handleRegister} error={error} />
+      <RegisterForm onRegister={handleRegister} error={error} loading={loading} />
       <a
         href={`${import.meta.env.VITE_BACKEND_URL}/auth/google`}
         className="block text-center underline text-blue-300"

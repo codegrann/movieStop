@@ -7,23 +7,27 @@ const LoginPage = () => {
   const { user, loginUser } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   if (user) return <Navigate to="/" replace />;
 
   const handleLogin = async (email: string, password: string) => {
     setError(null);
+    setLoading(true);
     try {
       await loginUser(email, password);
       navigate('/');
-    } catch (err: any){
+    } catch (err: any) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="box-border min-h-screen flex flex-col gap-6 items-center justify-center bg-gray-900 text-white p-4">
       <h1 className="text-2xl sm:text-3xl font-bold text-center mb-4">Welcome to MovieStop</h1>
-      <LoginForm onLogin={handleLogin} error={error} />
+      <LoginForm onLogin={handleLogin} error={error} loading={loading} />
       <a
         href={`${import.meta.env.VITE_BACKEND_URL}/auth/google`}
         className="block text-center underline text-blue-300"
