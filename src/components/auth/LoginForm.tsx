@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import LoadingSpinner from '../common/LoadingSpinner';
 
 interface Props {
   onLogin: (email: string, password: string) => void;
