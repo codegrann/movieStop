@@ -75,7 +75,7 @@ const AuthHandler = () => {
         console.error('Invalid token:', e);
       }
     }
-  }, [location.search, loginWithToken, navigate, location.pathname]);
+  }, [location.search, navigate]);
 
   return null;
 };
@@ -94,7 +94,7 @@ const App = () => {
         return;
       }
     }
-  }, []);
+  }, [logoutUser]);
 
   return (
     <Router>

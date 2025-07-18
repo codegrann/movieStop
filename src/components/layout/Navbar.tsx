@@ -44,7 +44,10 @@ const Navbar = () => {
             <>
               <span className="hidden md:block">Hello, {user?.name || 'User'}</span>
               <button
-                onClick={logoutUser}
+                onClick={() => {
+                  logoutUser();
+                  navigate('/');
+                }}
                 className="max-sm:hidden bg-red-600 hover:bg-red-500 rounded px-3 py-1 text-sm"
               >
                 Logout
@@ -93,6 +96,7 @@ const Navbar = () => {
               onClick={() => {
                 logoutUser();
                 setSidebarOpen(false);
+                navigate('/');
               }}
               className="mt-4 bg-red-600 hover:bg-red-500 rounded px-3 py-2"
             >

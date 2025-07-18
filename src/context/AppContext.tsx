@@ -1,4 +1,11 @@
-import { createContext, useState, ReactNode, useEffect } from 'react';
+import {
+  createContext,
+  useState,
+  ReactNode,
+  useEffect,
+  useCallback,
+  useMemo,
+} from 'react';
 import { User } from '../types';
 
 interface AuthContextType {
@@ -6,6 +13,7 @@ interface AuthContextType {
   token: string | null;
   login: (token: string, user: User) => void;
   logout: () => void;
+  loginWithToken: (token: string, user: User) => void;
 }
 
 export const AppContext = createContext<AuthContextType>({
@@ -13,6 +21,7 @@ export const AppContext = createContext<AuthContextType>({
   token: null,
   login: () => {},
   logout: () => {},
+  loginWithToken: () => {},
 });
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
@@ -41,25 +50,33 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [user, token]);
 
-  const login = (newToken: string, newUser: User) => {
+  const login = useCallback((newToken: string, newUser: User) => {
     setToken(newToken);
     setUser(newUser);
-    localStorage.setItem('token', newToken);
-    localStorage.setItem('user', JSON.stringify(newUser));
-    window.location.href = '/';
-  };
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     setToken(null);
     setUser(null);
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    window.location.href = '/login';
-  };
+  }, []);
+
+  const loginWithToken = useCallback((newToken: string, newUser: User) => {
+    setToken(newToken);
+    setUser(newUser);
+  }, []);
+
+  const contextValue = useMemo(
+    () => ({
+      user,
+      token,
+      login,
+      logout,
+      loginWithToken,
+    }),
+    [user, token, login, logout, loginWithToken],
+  );
 
   return (
-    <AppContext.Provider value={{ user, token, login, logout }}>
-      {children}
-    </AppContext.Provider>
+    <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
   );
 };

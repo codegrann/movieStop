@@ -8,20 +8,16 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 
 const HomePage = () => {
   const { movies, loading, error, setSearchQuery, loadMore, hasMore } = useMovies();
-  const { user } = useAuth();
+  // const { user } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!user) {
-      navigate('/login');
-    }
-  }, [user, navigate]);
 
   // Movie click handler to navigate to details page
   const handleMovieSelect = useCallback((id: number) => {
     // window.location.href = `/movies/${id}`;
     navigate(`/movies/${id}`);
-  }, [navigate]);
+  },
+  [navigate]
+  );
 
   // Infinite scroll handler
   useEffect(() => {
