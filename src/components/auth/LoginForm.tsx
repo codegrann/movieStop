@@ -9,7 +9,7 @@ interface Props {
 const LoginForm = ({ onLogin, error }: Props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [clicked, setClicked]=useState(false);
+  const [clicked, setClicked] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,7 +47,7 @@ const LoginForm = ({ onLogin, error }: Props) => {
         className="w-full py-3 bg-cyan-600 rounded hover:bg-cyan-500 transition-colors font-semibold"
         onClick={() => setClicked(true)}
       >
-        {clicked ? <LoadingSpinner /> : 'Log In'}
+        {clicked ? <p>Please wait...</p> : 'Log In'}
       </button>
     </form>
   );
