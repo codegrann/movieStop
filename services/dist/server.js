@@ -26,7 +26,7 @@ app.use('/api/auth', authRoutes_1.default);
 app.use('/api/movies', movieRoutes_1.default);
 app.use('/api/user', userRoutes_1.default);
 app.use((0, cors_1.default)({
-    origin: process.env.FRONTEND_URL, // Frontend URL
+    origin: process.env.FRONTEND_URL,
 }));
 app.get('/', (req, res) => {
     res.send(`
@@ -34,11 +34,11 @@ app.get('/', (req, res) => {
          <head>
            <style>
              body { background-color: #282c34; color: white; font-family: monospace;
-                display: flex; justify-content: center; align-items: center; height: 100vh; }
+                display: flex; justify-content: center; padding-top: 20px; height: 100vh; }
              #message{
                text-align: left;
-               width: 100%;
-               border: 2px solid red;
+               width: 70%;
+               margin-x: auto;
                margin-left: 10px;
                }
            </style>
@@ -71,5 +71,4 @@ app.listen(PORT, () => {
         }
         process.stdout.write(`\r${message}${dots}`.padEnd(message.length + 3));
     }, 500);
-    // console.log(`Server running on port ${PORT}`);
 });

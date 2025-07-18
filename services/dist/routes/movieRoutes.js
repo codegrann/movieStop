@@ -7,7 +7,7 @@ const express_1 = __importDefault(require("express"));
 const movieController_1 = require("../controllers/movieController");
 const authMiddleware_1 = require("../middleware/authMiddleware");
 const router = express_1.default.Router();
-router.get('/popular', authMiddleware_1.protect, movieController_1.getPopularMovies);
+router.get('/popular', movieController_1.getPopularMovies);
 router.get('/search', authMiddleware_1.protect, movieController_1.searchMovies);
 router.get('/:id', authMiddleware_1.protect, movieController_1.getMovieDetails);
 exports.default = router;
