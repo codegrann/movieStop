@@ -14,6 +14,7 @@ import RegisterPage from './pages/Register';
 import HomePage from './pages/Home';
 import MovieDetailsPage from './pages/MovieDetails';
 import FavoritesPage from './pages/FavoritesPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 import { useAuth } from './hooks/useAuth';
 import Navbar from './components/layout/Navbar';
@@ -142,7 +143,7 @@ const App = () => {
         />
 
         {/* Catch-all */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   );
