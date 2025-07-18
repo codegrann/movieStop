@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import LoadingSpinner from '../common/LoadingSpinner';
 
 interface Props {
   onLogin: (email: string, password: string) => void;
@@ -8,6 +9,7 @@ interface Props {
 const LoginForm = ({ onLogin, error }: Props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [clicked, setClicked]=useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,8 +45,9 @@ const LoginForm = ({ onLogin, error }: Props) => {
       <button
         type="submit"
         className="w-full py-3 bg-cyan-600 rounded hover:bg-cyan-500 transition-colors font-semibold"
+        onClick={() => setClicked(true)}
       >
-        Log In
+        {clicked ? <LoadingSpinner /> : 'Log In'}
       </button>
     </form>
   );
