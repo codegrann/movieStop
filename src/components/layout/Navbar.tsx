@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, X, User, Heart } from 'lucide-react';
+import { Menu, X, User, Heart, LogIn, UserPlus } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,10 +8,17 @@ const Navbar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
-  const menuItems = [
+  const authenticatedMenuItems = [
     { label: 'Account', icon: <User className="w-5 h-5 mr-2" />, onClick: () => navigate('/profile') },
     { label: 'Favorites', icon: <Heart className="w-5 h-5 mr-2" />, onClick: () => navigate('/favorites') },
   ];
+
+  const unauthenticatedMenuItems = [
+    { label: 'Login', icon: <LogIn className="w-5 h-5 mr-2" />, onClick: () => navigate('/login') },
+    { label: 'Register', icon: <UserPlus className="w-5 h-5 mr-2" />, onClick: () => navigate('/register') },
+  ];
+
+  const menuItems = user ? authenticatedMenuItems : unauthenticatedMenuItems;
 
   return (
     <>
@@ -33,13 +40,17 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center space-x-4">
-          <span className="hidden md:block">Hello, {user?.name || 'User'}</span>
-          <button
-            onClick={logoutUser}
-            className="max-sm:hidden bg-red-600 hover:bg-red-500 rounded px-3 py-1 text-sm"
-          >
-            Logout
-          </button>
+          {user && (
+            <>
+              <span className="hidden md:block">Hello, {user?.name || 'User'}</span>
+              <button
+                onClick={logoutUser}
+                className="max-sm:hidden bg-red-600 hover:bg-red-500 rounded px-3 py-1 text-sm"
+              >
+                Logout
+              </button>
+            </>
+          )}
 
           {/* Hamburger for small screens */}
           <button
@@ -77,15 +88,17 @@ const Navbar = () => {
               {item.label}
             </button>
           ))}
-          <button
-            onClick={() => {
-              logoutUser();
-              setSidebarOpen(false);
-            }}
-            className="mt-4 bg-red-600 hover:bg-red-500 rounded px-3 py-2"
-          >
-            Logout
-          </button>
+          {user && (
+            <button
+              onClick={() => {
+                logoutUser();
+                setSidebarOpen(false);
+              }}
+              className="mt-4 bg-red-600 hover:bg-red-500 rounded px-3 py-2"
+            >
+              Logout
+            </button>
+          )}
         </nav>
       </div>
 

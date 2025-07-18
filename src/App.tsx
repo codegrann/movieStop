@@ -20,6 +20,14 @@ import { useAuth } from './hooks/useAuth';
 import Navbar from './components/layout/Navbar';
 import AccountDetailsPage from './pages/AccountDetails';
 
+// New layout component
+const MainLayout = ({ children }: { children: JSX.Element }) => (
+  <>
+    <Navbar />
+    {children}
+  </>
+);
+
 // Protected route component to guard private routes
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { user } = useAuth();
@@ -95,27 +103,23 @@ const App = () => {
         {/* Public */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-
-        {/* Protected */}
         <Route
           path="/"
           element={
-            <ProtectedRoute>
-              <>
-                <Navbar />
-                <HomePage />
-              </>
-            </ProtectedRoute>
+            <MainLayout>
+              <HomePage />
+            </MainLayout>
           }
         />
+
+        {/* Protected */}
         <Route
           path="/movies/:id"
           element={
             <ProtectedRoute>
-              <>
-                <Navbar />
+              <MainLayout>
                 <MovieDetailsPage />
-              </>
+              </MainLayout>
             </ProtectedRoute>
           }
         />
@@ -123,10 +127,9 @@ const App = () => {
           path="/favorites"
           element={
             <ProtectedRoute>
-              <>
-                <Navbar />
+              <MainLayout>
                 <FavoritesPage />
-              </>
+              </MainLayout>
             </ProtectedRoute>
           }
         />
@@ -134,10 +137,9 @@ const App = () => {
           path="/profile"
           element={
             <ProtectedRoute>
-              <>
-                <Navbar />
+              <MainLayout>
                 <AccountDetailsPage />
-              </>
+              </MainLayout>
             </ProtectedRoute>
           }
         />
