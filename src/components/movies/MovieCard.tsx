@@ -12,17 +12,19 @@ interface MovieCardProps {
 }
 
 // import image_base from .env file
-const IMAGE_BASE = import.meta.env.VITE_IMAGE_BASE;
- const MovieCard: React.FC<MovieCardProps> = ({ movie, onClick }) => {
+const POSTER_BASE_URL = import.meta.env.VITE_POSTER_BASE_URL;
+
+const MovieCard: React.FC<MovieCardProps> = ({ movie, onClick }) => {
   return (
-    <div onClick={() => onClick(movie.id)}
+    <div
+      onClick={() => onClick(movie.id)}
       className="group cursor-pointer bg-gray-800 rounded-lg overflow-hidden shadow-lg transition-all duration-300"
     >
       <div className="relative overflow-hidden">
         {/* Image */}
         {movie.poster_path ? (
           <img
-            src={`${IMAGE_BASE}${movie.poster_path}`}
+            src={`${POSTER_BASE_URL}${movie.poster_path}`}
             alt={movie.title}
             className="w-full h-96 object-cover transform group-hover:scale-110 transition-transform duration-500"
           />

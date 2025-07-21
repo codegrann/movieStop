@@ -4,13 +4,14 @@ import { useState, useEffect } from 'react';
 interface HeroMovie {
   id: number;
   poster_path: string | null;
+  backdrop_path: string | null;
 }
 
 interface HeroSliderProps {
   movies: HeroMovie[];
 }
 
-const IMAGE_BASE = import.meta.env.VITE_IMAGE_BASE;
+const BACKDROP_BASE_URL = import.meta.env.VITE_BACKDROP_BASE_URL;
 
 const HeroSlider = ({ movies }: HeroSliderProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -38,7 +39,9 @@ const HeroSlider = ({ movies }: HeroSliderProps) => {
             index === currentIndex ? 'opacity-100' : 'opacity-0'
           }`}
           style={{
-            backgroundImage: `url(${IMAGE_BASE}${movie.poster_path})`,
+            backgroundImage: `url(${BACKDROP_BASE_URL}${
+              movie.backdrop_path || movie.poster_path
+            })`,
           }}
         />
       ))}
