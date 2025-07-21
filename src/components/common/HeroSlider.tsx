@@ -30,7 +30,7 @@ const HeroSlider = ({ movies }: HeroSliderProps) => {
   }
 
   return (
-    <div className="absolute inset-0 w-full h-full overflow-hidden -z-10">
+    <div className="absolute inset-0 w-full h-full overflow-hidden">
       {movies.map((movie, index) => (
         <div
           key={movie.id}
