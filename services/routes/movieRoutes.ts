@@ -5,7 +5,7 @@ import { protect } from '../middleware/authMiddleware';
 const router = express.Router();
 
 router.get('/popular', getPopularMovies);
-router.get('/search', protect, searchMovies);
+router.get('/search', searchMovies);
 router.get('/:id', protect, getMovieDetails);
 
 export default router;

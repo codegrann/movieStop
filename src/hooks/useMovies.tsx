@@ -35,9 +35,7 @@ export const useMovies = () => {
         ? `${API_BASE}/movies/search?query=${encodeURIComponent(query)}&page=${pageNum}`
         : `${API_BASE}/movies/popular?page=${pageNum}`;
 
-      const res = await API.get<MoviesResponse>(url, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      });
+      const res = await API.get<MoviesResponse>(url);
 
       const newMovies = res.data.results;
 
