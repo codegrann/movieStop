@@ -68,8 +68,11 @@ Create a .env file in the frontend/ folder with the following variables:
 
 ```bash
 
-VITE_BACKEND_URL=http://localhost:5000/api/auth
 VITE_FRONTEND_URL=http://localhost:5173
+VITE_BACKEND_URL=http://localhost:5000/api
+VITE_POSTER_BASE_URL=https://image.tmdb.org/t/p/w500
+VITE_BACKDROP_BASE_URL=https://image.tmdb.org/t/p/w1280
+
 ```
 
 Start the frontend development server:
