@@ -46,9 +46,9 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
-      <div className="pt-16">
+      <div className="pt-12">
         {/* Hero Section */}
-        <div className="relative text-center py-20 md:py-32 px-4 overflow-hidden">
+        <div className="relative h-[600px] text-center py-20 md:py-32 px-4 overflow-hidden">
           <HeroSlider movies={heroMovies} />
           <div className="relative z-10">
             <h1 className="text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-lg">
