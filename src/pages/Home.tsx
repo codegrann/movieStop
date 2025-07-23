@@ -77,6 +77,12 @@ const HomePage = () => {
             </p>
           )}
         </div>
+        {/* footer */}
+        <footer className="bg-gray-800 py-4 text-center sticky bottom-0">
+          <p className="text-sm text-gray-400">
+            &copy; 2025 MovieStop. All rights reserved.
+          </p>
+        </footer>
       </div>
     </div>
   );

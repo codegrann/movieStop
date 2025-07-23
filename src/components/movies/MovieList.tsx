@@ -1,14 +1,21 @@
 import React from 'react';
 import MovieCard from './MovieCard';
 import { useMovies } from '../../hooks/useMovies';
+import { Movie } from '../../types';
 
 interface MovieListProps {
+  movies?: Movie[]; // Make movies prop optional
   onMovieSelect: (id: number) => void;
 }
 
-const MovieList: React.FC<MovieListProps> = ({ onMovieSelect }) => {
-  const { movies, loading, error, hasMore, loadMore } = useMovies();
-
+const MovieListContent: React.FC<{
+  movies: Movie[];
+  loading: boolean;
+  error: string | null;
+  hasMore: boolean;
+  loadMore: () => void;
+  onMovieSelect: (id: number) => void;
+}> = ({ movies, loading, error, hasMore, loadMore, onMovieSelect }) => {
   if (loading && movies.length === 0) {
     return <p className="text-gray-400 text-center mt-10">Loading movies...</p>;
   }
@@ -41,6 +48,28 @@ const MovieList: React.FC<MovieListProps> = ({ onMovieSelect }) => {
       )}
     </div>
   );
+};
+
+const MovieList: React.FC<MovieListProps> = ({ movies: moviesProp, onMovieSelect }) => {
+  const hookData = useMovies();
+
+  if (moviesProp) {
+    // If movies are passed as a prop, render them directly.
+    // We can create dummy values for the other props since they won't be used.
+    return (
+      <MovieListContent
+        movies={moviesProp}
+        loading={false}
+        error={null}
+        hasMore={false}
+        loadMore={() => {}}
+        onMovieSelect={onMovieSelect}
+      />
+    );
+  }
+
+  // Otherwise, use the data from the useMovies hook.
+  return <MovieListContent {...hookData} onMovieSelect={onMovieSelect} />;
 };
 
 export default MovieList;
