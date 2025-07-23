@@ -1,17 +1,7 @@
 import { useState, useEffect, useCallback, useContext } from 'react';
 import API from '../services/api';
 import { AppContext } from '../context/AppContext';
-
-interface Movie {
-  id: number;
-  title: string;
-  poster_path: string | null;
-  backdrop_path: string | null;
-  release_date: string;
-  vote_average: number;
-  overview: string;
-  genre_ids: number[];
-}
+import { Movie } from '../types';
 
 interface MoviesResponse {
   results: Movie[];
@@ -30,39 +20,47 @@ export const useMovies = () => {
   const [error, setError] = useState<string | null>(null);
   const { selectedGenre } = useContext(AppContext);
 
-  const fetchMovies = useCallback(async (pageNum: number, query = '') => {
-    setLoading(true);
-    setError(null);
+  const fetchMovies = useCallback(
+    async (pageNum: number, query = '') => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      const url = query
-        ? `${API_BASE}/movies/search?query=${encodeURIComponent(query)}&page=${pageNum}`
-        : `${API_BASE}/movies/popular?page=${pageNum}`;
+      try {
+        const url = query
+          ? `${API_BASE}/movies/search?query=${encodeURIComponent(query)}&page=${pageNum}`
+          : `${API_BASE}/movies/popular?page=${pageNum}`;
 
-      const res = await API.get<MoviesResponse>(url);
+        const res = await API.get<MoviesResponse>(url);
 
-      let newMovies = res.data.results;
-      if (selectedGenre) {
-        newMovies = newMovies.filter(movie => movie.genre_ids.includes(selectedGenre.id));
+        let newMovies = res.data.results;
+        if (selectedGenre) {
+          newMovies = newMovies.filter((movie) => movie.genre_ids.includes(selectedGenre.id));
+        }
+
+        setMovies((prevMovies) => {
+          if (pageNum === 1) return newMovies;
+          const existingIds = new Set(prevMovies.map((m) => m.id));
+          const uniqueNewMovies = newMovies.filter((m) => !existingIds.has(m.id));
+          return [...prevMovies, ...uniqueNewMovies];
+        });
+        setPage(res.data.page);
+        setTotalPages(res.data.total_pages);
+      } catch (e) {
+        setError('Failed to fetch movies');
+      } finally {
+        setLoading(false);
       }
-
-      setMovies((prev) => (pageNum === 1 ? newMovies : [...prev, ...newMovies]));
-      setPage(res.data.page);
-      setTotalPages(res.data.total_pages);
-    } catch (e) {
-      setError('Failed to fetch movies');
-    } finally {
-      setLoading(false);
-    }
-  }, [selectedGenre]);
+    },
+    [selectedGenre],
+  );
 
   useEffect(() => {
+    setMovies([]); // Reset movies when search query or genre changes
     fetchMovies(1, searchQuery);
   }, [fetchMovies, searchQuery, selectedGenre]);
 
   const loadMore = () => {
-    if (loading) return;
-    if (page >= totalPages) return;
+    if (loading || page >= totalPages) return;
     fetchMovies(page + 1, searchQuery);
   };
 

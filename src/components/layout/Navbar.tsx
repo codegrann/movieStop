@@ -89,14 +89,14 @@ const Navbar = () => {
             className="md:hidden p-2 rounded hover:bg-gray-700"
             aria-label="Toggle menu"
           >
-            {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {sidebarOpen ? '' : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </nav>
 
       {/* Sidebar for small screens */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-gray-900 text-white shadow-lg transform transition-transform duration-300 ease-in-out z-50
+        className={`fixed top-0 left-0 h-full w-64 bg-gray-900 opacity-95 text-white shadow-lg transform transition-transform duration-500 ease-in-out z-50
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div className="p-4 border-b border-gray-700 flex justify-between items-center">
