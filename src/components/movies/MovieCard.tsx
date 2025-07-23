@@ -26,7 +26,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, onClick }) => {
           <img
             src={`${POSTER_BASE_URL}${movie.poster_path}`}
             alt={movie.title}
-            className="w-full h-96 object-cover transform group-hover:scale-110 transition-transform duration-500"
+            className="w-full h-[240px] md:h-[300px] object-cover transform group-hover:scale-110 transition-transform duration-500"
           />
         ) : (
           <div className="w-full h-96 bg-gray-700 flex items-center justify-center text-gray-400">
@@ -45,14 +45,10 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, onClick }) => {
           <h3 className="text-white text-lg font-bold truncate">{movie.title}</h3>
           <p className="text-gray-300 text-sm">
             {new Date(movie.release_date).getFullYear()}
+            <span className='text-yellow-400 font-bold ml-[5px] hidden group-hover:inline'> - {movie.vote_average.toFixed(1)}</span>
+            <span className="text-white font-normal hidden group-hover:inline">/10</span>
           </p>
         </div>
-      </div>
-      <div className="p-4 bg-gray-800">
-        <p className="text-yellow-400 font-bold text-lg">
-          {movie.vote_average.toFixed(1)}
-          <span className="text-white text-sm font-normal">/ 10</span>
-        </p>
       </div>
     </div>
   );
