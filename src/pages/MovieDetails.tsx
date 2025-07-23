@@ -109,7 +109,7 @@ const MovieDetailsPage = () => {
           <img
             src={`${IMAGE_BASE}${movie.poster_path}`}
             alt={movie.title}
-            className="w-full md:w-64 rounded shadow-lg"
+            className="w-full w-48 md:w-64 rounded shadow-lg"
           />
         ) : (
           <div className="w-full md:w-1/3 bg-gray-700 flex items-center justify-center text-gray-400 rounded h-64">
@@ -118,8 +118,8 @@ const MovieDetailsPage = () => {
         )}
 
         <div className="flex-1 max-w-4xl">
-          <h1 className="text-3xl font-bold mb-2">{movie.title}</h1>
-          <p className="text-gray-300 mb-4">{movie.overview}</p>
+          <h1 className="text-xl md:text-3xl font-bold mb-2">{movie.title}</h1>
+          <p className="text-sm sm:text-base text-gray-300 mb-4">{movie.overview}</p>
 
           <p>
             <strong>Release Date:</strong> {new Date(movie.release_date).toLocaleDateString()}
@@ -152,17 +152,25 @@ const MovieDetailsPage = () => {
             {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
           </button>
 
-          <h2 className="text-xl font-semibold mb-2">Cast</h2>
-          <ul className="mb-4 max-h-48 overflow-y-auto">
+          <h2 className="text-lg md:text-xl font-semibold mb-2">Cast</h2>
+          <ul className="mb-4 max-h-48 text-sm sm:text-md overflow-y-auto">
             {movie.credits.cast.slice(0, 10).map((actor) => (
               <li key={actor.id} className="mb-1">
                 {actor.name} as {actor.character}
               </li>
             ))}
           </ul>
+          
+          {/* <p className="mb-4 max-h-48 text-sm sm:text-base overflow-y-auto">
+            {movie.credits.cast
+              .slice(0, 10)
+              .map((actor) => `${actor.name} as ${actor.character}`)
+              .join(', ')}
+          </p> */}
 
-          <h2 className="text-xl font-semibold mb-2">Crew</h2>
-          <ul className="max-h-48 overflow-y-auto">
+
+          <h2 className="text-lg md:text-xl font-semibold mb-2">Crew</h2>
+          <ul className="max-h-48 text-sm sm:text-md overflow-y-auto">
             {movie.credits.crew.slice(0, 10).map((member) => (
               <li key={member.id} className="mb-1">
                 {member.name} - {member.job}

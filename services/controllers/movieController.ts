@@ -32,3 +32,12 @@ export const getMovieDetails = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Failed to fetch movie details' });
   }
 };
+
+export const getGenres = async (req: Request, res: Response) => {
+  try {
+    const data = await tmdpApi.getGenres();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch genres' });
+  }
+};

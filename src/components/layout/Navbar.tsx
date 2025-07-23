@@ -1,11 +1,14 @@
-import { useState } from 'react';
-import { Menu, X, User, Heart, LogIn, UserPlus } from 'lucide-react';
+import { useState, useContext } from 'react';
+import { Menu, X, User, Heart, LogIn, UserPlus, ChevronDown } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../../context/AppContext';
 
 const Navbar = () => {
   const { user, logoutUser } = useAuth();
+  const { genres, selectGenre } = useContext(AppContext);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [genreDropdownOpen, setGenreDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
   const authenticatedMenuItems = [
@@ -36,6 +39,31 @@ const Navbar = () => {
                 {item.label}
               </button>
             ))}
+            <div className="relative">
+              <button
+                onClick={() => setGenreDropdownOpen(!genreDropdownOpen)}
+                className="flex items-center text-cyan-200 hover:text-cyan-500 transition"
+              >
+                Genres <ChevronDown className="w-5 h-5 ml-1" />
+              </button>
+              {genreDropdownOpen && (
+                <div className="absolute mt-2 w-48 bg-gray-700 rounded-md shadow-lg">
+                  {genres.map((genre) => (
+                    <button
+                      key={genre.id}
+                      onClick={() => {
+                        selectGenre(genre);
+                        setGenreDropdownOpen(false);
+                        navigate('/');
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-gray-600"
+                    >
+                      {genre.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 

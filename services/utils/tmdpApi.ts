@@ -39,3 +39,8 @@ export const fetchMovieDetails = async (movieId: string | number) => {
   });
   return response.data;
 };
+
+export const getGenres = async () => {
+  const response = await tmdb.get('/genre/movie/list');
+  return response.data.genres;
+};

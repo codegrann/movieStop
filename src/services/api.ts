@@ -33,4 +33,6 @@ API.interceptors.response.use(
   }
 );
 
+export const getGenres = () => API.get('/movies/genres');
+
 export default API;

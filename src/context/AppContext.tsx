@@ -6,29 +6,37 @@ import {
   useCallback,
   useMemo,
 } from 'react';
-import { User } from '../types';
+import { User, Genre } from '../types';
+import { getGenres } from '../services/api';
 
-interface AuthContextType {
+interface AppContextType {
   user: User | null;
   token: string | null;
+  genres: Genre[];
+  selectedGenre: Genre | null;
   login: (token: string, user: User) => void;
   logout: () => void;
   loginWithToken: (token: string, user: User) => void;
+  selectGenre: (genre: Genre | null) => void;
 }
 
-export const AppContext = createContext<AuthContextType>({
+export const AppContext = createContext<AppContextType>({
   user: null,
   token: null,
+  genres: [],
+  selectedGenre: null,
   login: () => {},
   logout: () => {},
   loginWithToken: () => {},
+  selectGenre: () => {},
 });
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [genres, setGenres] = useState<Genre[]>([]);
+  const [selectedGenre, setSelectedGenre] = useState<Genre | null>(null);
 
-  // Load from localStorage on mount
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     const storedToken = localStorage.getItem('token');
@@ -37,9 +45,19 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setUser(JSON.parse(storedUser));
       setToken(storedToken);
     }
+
+    const fetchGenres = async () => {
+      try {
+        const response = await getGenres();
+        setGenres(response.data);
+      } catch (error) {
+        console.error('Failed to fetch genres', error);
+      }
+    };
+
+    fetchGenres();
   }, []);
 
-  // Save to localStorage when user or token changes
   useEffect(() => {
     if (user && token) {
       localStorage.setItem('user', JSON.stringify(user));
@@ -65,15 +83,22 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setUser(newUser);
   }, []);
 
+  const selectGenre = useCallback((genre: Genre | null) => {
+    setSelectedGenre(genre);
+  }, []);
+
   const contextValue = useMemo(
     () => ({
       user,
       token,
+      genres,
+      selectedGenre,
       login,
       logout,
       loginWithToken,
+      selectGenre,
     }),
-    [user, token, login, logout, loginWithToken],
+    [user, token, genres, selectedGenre, login, logout, loginWithToken, selectGenre],
   );
 
   return (

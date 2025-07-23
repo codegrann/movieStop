@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
 import API from '../services/api';
+import { AppContext } from '../context/AppContext';
 
 interface Movie {
   id: number;
@@ -9,6 +10,7 @@ interface Movie {
   release_date: string;
   vote_average: number;
   overview: string;
+  genre_ids: number[];
 }
 
 interface MoviesResponse {
@@ -26,6 +28,7 @@ export const useMovies = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { selectedGenre } = useContext(AppContext);
 
   const fetchMovies = useCallback(async (pageNum: number, query = '') => {
     setLoading(true);
@@ -38,7 +41,10 @@ export const useMovies = () => {
 
       const res = await API.get<MoviesResponse>(url);
 
-      const newMovies = res.data.results;
+      let newMovies = res.data.results;
+      if (selectedGenre) {
+        newMovies = newMovies.filter(movie => movie.genre_ids.includes(selectedGenre.id));
+      }
 
       setMovies((prev) => (pageNum === 1 ? newMovies : [...prev, ...newMovies]));
       setPage(res.data.page);
@@ -48,14 +54,12 @@ export const useMovies = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [selectedGenre]);
 
-  // Fetch initial or when search changes
   useEffect(() => {
     fetchMovies(1, searchQuery);
-  }, [fetchMovies, searchQuery]);
+  }, [fetchMovies, searchQuery, selectedGenre]);
 
-  // Load more for infinite scroll
   const loadMore = () => {
     if (loading) return;
     if (page >= totalPages) return;
