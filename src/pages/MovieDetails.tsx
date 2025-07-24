@@ -132,7 +132,7 @@ const MovieDetailsPage = () => {
           </p>
           <p className="mb-4">
             <strong>Genres:</strong>{' '}
-            {movie.genres.map((g) => g.name).join(', ')}
+            {movie.genres?.map((g) => g.name).join(', ')}
           </p>
 
           {/* Play Button */}
@@ -154,7 +154,7 @@ const MovieDetailsPage = () => {
 
           <h2 className="text-lg md:text-xl font-semibold mb-2">Cast</h2>
           <ul className="mb-4 max-h-48 text-sm sm:text-md overflow-y-auto">
-            {movie.credits.cast.slice(0, 10).map((actor) => (
+            {movie.credits?.cast.slice(0, 10).map((actor) => (
               <li key={actor.id} className="mb-1">
                 {actor.name} as {actor.character}
               </li>
@@ -171,7 +171,7 @@ const MovieDetailsPage = () => {
 
           <h2 className="text-lg md:text-xl font-semibold mb-2">Crew</h2>
           <ul className="max-h-48 text-sm sm:text-md overflow-y-auto">
-            {movie.credits.crew.slice(0, 10).map((member) => (
+            {movie.credits?.crew.slice(0, 10).map((member) => (
               <li key={member.id} className="mb-1">
                 {member.name} - {member.job}
               </li>

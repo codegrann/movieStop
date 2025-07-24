@@ -34,7 +34,9 @@ export const useMovies = () => {
 
         let newMovies = res.data.results;
         if (selectedGenre) {
-          newMovies = newMovies.filter((movie) => movie.genre_ids.includes(selectedGenre.id));
+          newMovies = newMovies.filter(
+            (movie) => movie.genre_ids && movie.genre_ids.includes(selectedGenre.id)
+          );
         }
 
         setMovies((prevMovies) => {

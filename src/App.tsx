@@ -24,7 +24,15 @@ import AccountDetailsPage from './pages/AccountDetails';
 const MainLayout = ({ children }: { children: JSX.Element }) => (
   <>
     <Navbar />
+
     {children}
+
+    {/* footer */}
+    <footer className="bg-gray-800 py-4 text-center sticky bottom-0">
+      <p className="text-sm text-gray-400">
+        &copy; 2025 MovieStop. All rights reserved.
+      </p>
+    </footer>
   </>
 );
 
@@ -67,7 +75,8 @@ const AuthHandler = () => {
 
         loginWithToken(token, user);
 
-        const redirectPath = sessionStorage.getItem('redirectAfterLogin') || '/';
+        const redirectPath =
+          sessionStorage.getItem('redirectAfterLogin') || '/';
         sessionStorage.removeItem('redirectAfterLogin');
         navigate(redirectPath, { replace: true });
         // navigate(location.pathname, { replace: true });

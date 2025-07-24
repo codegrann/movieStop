@@ -7,13 +7,18 @@ import { useAuth } from '../hooks/useAuth';
 import HeroSlider from '../components/common/HeroSlider';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
+import { HeroMovie } from '../types';
+
 const HomePage = () => {
   const { movies, loading, error, setSearchQuery, loadMore, hasMore } =
     useMovies();
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const heroMovies = movies.slice(0, 5);
+  const heroMovies = movies
+    .filter((movie): movie is HeroMovie => !!movie.backdrop_path)
+    .slice(0, 5);
+
 
   // Movie click handler to navigate to details page
   const handleMovieSelect = useCallback(
@@ -77,12 +82,12 @@ const HomePage = () => {
             </p>
           )}
         </div>
-        {/* footer */}
+        {/* footer
         <footer className="bg-gray-800 py-4 text-center sticky bottom-0">
           <p className="text-sm text-gray-400">
             &copy; 2025 MovieStop. All rights reserved.
           </p>
-        </footer>
+        </footer> */}
       </div>
     </div>
   );
