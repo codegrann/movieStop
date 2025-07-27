@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getMovieDetails = exports.searchMovies = exports.getPopularMovies = void 0;
+exports.getGenres = exports.getMovieDetails = exports.searchMovies = exports.getPopularMovies = void 0;
 const tmdpApi = __importStar(require("../utils/tmdpApi"));
 const getPopularMovies = async (req, res) => {
     try {
@@ -71,3 +71,13 @@ const getMovieDetails = async (req, res) => {
     }
 };
 exports.getMovieDetails = getMovieDetails;
+const getGenres = async (req, res) => {
+    try {
+        const data = await tmdpApi.getGenres();
+        res.json(data);
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Failed to fetch genres' });
+    }
+};
+exports.getGenres = getGenres;

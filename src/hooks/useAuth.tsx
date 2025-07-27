@@ -10,29 +10,30 @@ export const useAuth = () => {
       try {
         const { token: newToken, user: newUser } = await authService.login(
           email,
-          password,
+          password
         );
         login(newToken, { ...newUser, favorites: [] });
       } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Login failed');
       }
     },
-    [login],
+    [login]
   );
 
   const registerUser = useCallback(
     async (email: string, password: string, name: string) => {
       try {
-        const { token: newToken, user: newUser } =
-          await authService.register(email, password, name);
+        const { token: newToken, user: newUser } = await authService.register(
+          email,
+          password,
+          name
+        );
         login(newToken, { ...newUser, favorites: [] });
       } catch (error: any) {
-        throw new Error(
-          error.response?.data?.message || 'Registration failed',
-        );
+        throw new Error(error.response?.data?.message || 'Registration failed');
       }
     },
-    [login],
+    [login]
   );
 
   const logoutUser = useCallback(() => {

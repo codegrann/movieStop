@@ -26,7 +26,9 @@ const LoginPage = () => {
 
   return (
     <div className="box-border min-h-screen flex flex-col gap-6 items-center justify-center bg-gray-900 text-white p-4">
-      <h1 className="text-2xl sm:text-3xl font-bold text-center mb-4">Welcome to MovieStop</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold text-center mb-4">
+        Welcome to MovieStop
+      </h1>
       <LoginForm onLogin={handleLogin} error={error} loading={loading} />
       <a
         href={`${import.meta.env.VITE_BACKEND_URL}/auth/google`}
@@ -35,7 +37,12 @@ const LoginPage = () => {
         Sign in with Google
       </a>
 
-      <button className='text-white font-bold px-2 py-1 border border-cyan-200 hover:border-cyan-500 hover:text-cyan-500 rounded' onClick={() => navigate('/register')}>Sign Up</button>
+      <button
+        className="text-white font-bold px-2 py-1 border border-cyan-200 hover:border-cyan-500 hover:text-cyan-500 rounded"
+        onClick={() => navigate('/register')}
+      >
+        Sign Up
+      </button>
     </div>
   );
 };

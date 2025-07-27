@@ -51,7 +51,10 @@ const RegisterForm = ({ onRegister, error, loading }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md w-full space-y-6 bg-gray-800 p-8 rounded-lg shadow-lg">
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-md w-full space-y-6 bg-gray-800 p-8 rounded-lg shadow-lg"
+    >
       <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6">
         Create Account
       </h2>
@@ -92,7 +95,9 @@ const RegisterForm = ({ onRegister, error, loading }: Props) => {
         className="w-full p-3 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
       />
 
-      {validationError && <div className="text-red-500 text-sm">{validationError}</div>}
+      {validationError && (
+        <div className="text-red-500 text-sm">{validationError}</div>
+      )}
       {error && <div className="text-red-500 text-sm">{error}</div>}
 
       <button

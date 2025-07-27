@@ -21,7 +21,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       className="w-full max-w-md p-2 md:p-3 rounded md:rounded-lg bg-secondary text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent transition-shadow shadow-md focus:shadow-lg"
       placeholder="Search movies..."
       value={input}
-      onChange={(e) => setInput(e.target.value)}
+      onChange={e => setInput(e.target.value)}
     />
   );
 };

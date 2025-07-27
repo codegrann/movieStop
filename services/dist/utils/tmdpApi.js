@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchMovieDetails = exports.searchMovies = exports.fetchPopularMovies = void 0;
+exports.getGenres = exports.fetchMovieDetails = exports.searchMovies = exports.fetchPopularMovies = void 0;
 const axios_1 = __importDefault(require("axios"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
@@ -41,3 +41,8 @@ const fetchMovieDetails = async (movieId) => {
     return response.data;
 };
 exports.fetchMovieDetails = fetchMovieDetails;
+const getGenres = async () => {
+    const response = await tmdb.get('/genre/movie/list');
+    return response.data.genres;
+};
+exports.getGenres = getGenres;

@@ -1,5 +1,3 @@
-
-
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center py-8">
     <svg

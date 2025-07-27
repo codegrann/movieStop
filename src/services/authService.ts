@@ -14,12 +14,19 @@ interface LoginResponse {
   user: User;
 }
 
-const login = async (email: string, password: string): Promise<LoginResponse> => {
+const login = async (
+  email: string,
+  password: string
+): Promise<LoginResponse> => {
   const response = await API.post(`/auth/login`, { email, password });
   return response.data;
 };
 
-const register = async (email: string, password: string, name: string): Promise<LoginResponse> => {
+const register = async (
+  email: string,
+  password: string,
+  name: string
+): Promise<LoginResponse> => {
   const response = await API.post(`/auth/register`, { email, password, name });
   return response.data;
 };

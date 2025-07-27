@@ -98,7 +98,16 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       loginWithToken,
       selectGenre,
     }),
-    [user, token, genres, selectedGenre, login, logout, loginWithToken, selectGenre],
+    [
+      user,
+      token,
+      genres,
+      selectedGenre,
+      login,
+      logout,
+      loginWithToken,
+      selectGenre,
+    ]
   );
 
   return (

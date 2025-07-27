@@ -73,7 +73,7 @@ const MovieDetailsPage = () => {
         await API.delete(`/user/favorites/${movie.id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setFavorites((prev) => prev.filter((favId) => favId !== movie.id));
+        setFavorites(prev => prev.filter(favId => favId !== movie.id));
       } else {
         // Add favorite
         await API.post(
@@ -83,7 +83,7 @@ const MovieDetailsPage = () => {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        setFavorites((prev) => [...prev, movie.id]);
+        setFavorites(prev => [...prev, movie.id]);
         navigate('/favorites');
       }
     } catch (err) {
@@ -91,9 +91,18 @@ const MovieDetailsPage = () => {
     }
   };
 
-  if (loading) return <div className="pt-24"><LoadingSpinner /></div>;
-  if (error) return <p className="text-center text-red-500 pt-20 mt-10">{error}</p>;
-  if (!movie) return <p className="text-center text-white pt-20 mt-10">Movie not found</p>;
+  if (loading)
+    return (
+      <div className="pt-24">
+        <LoadingSpinner />
+      </div>
+    );
+  if (error)
+    return <p className="text-center text-red-500 pt-20 mt-10">{error}</p>;
+  if (!movie)
+    return (
+      <p className="text-center text-white pt-20 mt-10">Movie not found</p>
+    );
 
   return (
     <div className="min-h-screen bg-gray-900 text-white px-6 pt-20 max-w-full mx-auto">
@@ -119,10 +128,13 @@ const MovieDetailsPage = () => {
 
         <div className="flex-1 max-w-4xl">
           <h1 className="text-xl md:text-3xl font-bold mb-2">{movie.title}</h1>
-          <p className="text-sm sm:text-base text-gray-300 mb-4">{movie.overview}</p>
+          <p className="text-sm sm:text-base text-gray-300 mb-4">
+            {movie.overview}
+          </p>
 
           <p>
-            <strong>Release Date:</strong> {new Date(movie.release_date).toLocaleDateString()}
+            <strong>Release Date:</strong>{' '}
+            {new Date(movie.release_date).toLocaleDateString()}
           </p>
           <p>
             <strong>Rating:</strong> {movie.vote_average.toFixed(1)}
@@ -131,8 +143,7 @@ const MovieDetailsPage = () => {
             <strong>Runtime:</strong> {movie.runtime} minutes
           </p>
           <p className="mb-4">
-            <strong>Genres:</strong>{' '}
-            {movie.genres?.map((g) => g.name).join(', ')}
+            <strong>Genres:</strong> {movie.genres?.map(g => g.name).join(', ')}
           </p>
 
           {/* Play Button */}
@@ -142,25 +153,31 @@ const MovieDetailsPage = () => {
           >
             Play
           </button>
-          {playingMsg && <p className="text-yellow-300 text-sm mb-4">Playing coming soon!</p>}
+          {playingMsg && (
+            <p className="text-yellow-300 text-sm mb-4">Playing coming soon!</p>
+          )}
 
           {/* Add to Favorites Button */}
           <button
             onClick={handleToggleFavorite}
-            className={`mb-8 px-6 py-2 rounded text-white ${isFavorite ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-600 hover:bg-gray-700'}`}
+            className={`mb-8 px-6 py-2 rounded text-white ${
+              isFavorite
+                ? 'bg-red-600 hover:bg-red-700'
+                : 'bg-gray-600 hover:bg-gray-700'
+            }`}
           >
             {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
           </button>
 
           <h2 className="text-lg md:text-xl font-semibold mb-2">Cast</h2>
           <ul className="mb-4 max-h-48 text-sm sm:text-md overflow-y-auto">
-            {movie.credits?.cast.slice(0, 10).map((actor) => (
+            {movie.credits?.cast.slice(0, 10).map(actor => (
               <li key={actor.id} className="mb-1">
                 {actor.name} as {actor.character}
               </li>
             ))}
           </ul>
-          
+
           {/* <p className="mb-4 max-h-48 text-sm sm:text-base overflow-y-auto">
             {movie.credits.cast
               .slice(0, 10)
@@ -168,10 +185,9 @@ const MovieDetailsPage = () => {
               .join(', ')}
           </p> */}
 
-
           <h2 className="text-lg md:text-xl font-semibold mb-2">Crew</h2>
           <ul className="max-h-48 text-sm sm:text-md overflow-y-auto">
-            {movie.credits?.crew.slice(0, 10).map((member) => (
+            {movie.credits?.crew.slice(0, 10).map(member => (
               <li key={member.id} className="mb-1">
                 {member.name} - {member.job}
               </li>

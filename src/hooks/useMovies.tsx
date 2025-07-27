@@ -27,7 +27,9 @@ export const useMovies = () => {
 
       try {
         const url = query
-          ? `${API_BASE}/movies/search?query=${encodeURIComponent(query)}&page=${pageNum}`
+          ? `${API_BASE}/movies/search?query=${encodeURIComponent(
+              query
+            )}&page=${pageNum}`
           : `${API_BASE}/movies/popular?page=${pageNum}`;
 
         const res = await API.get<MoviesResponse>(url);
@@ -35,14 +37,15 @@ export const useMovies = () => {
         let newMovies = res.data.results;
         if (selectedGenre) {
           newMovies = newMovies.filter(
-            (movie) => movie.genre_ids && movie.genre_ids.includes(selectedGenre.id)
+            movie =>
+              movie.genre_ids && movie.genre_ids.includes(selectedGenre.id)
           );
         }
 
-        setMovies((prevMovies) => {
+        setMovies(prevMovies => {
           if (pageNum === 1) return newMovies;
-          const existingIds = new Set(prevMovies.map((m) => m.id));
-          const uniqueNewMovies = newMovies.filter((m) => !existingIds.has(m.id));
+          const existingIds = new Set(prevMovies.map(m => m.id));
+          const uniqueNewMovies = newMovies.filter(m => !existingIds.has(m.id));
           return [...prevMovies, ...uniqueNewMovies];
         });
         setPage(res.data.page);
@@ -53,7 +56,7 @@ export const useMovies = () => {
         setLoading(false);
       }
     },
-    [selectedGenre],
+    [selectedGenre]
   );
 
   useEffect(() => {

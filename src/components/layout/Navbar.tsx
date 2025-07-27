@@ -1,5 +1,13 @@
 import { useState, useContext } from 'react';
-import { Menu, X, User, Heart, LogIn, UserPlus, ChevronDown } from 'lucide-react';
+import {
+  Menu,
+  X,
+  User,
+  Heart,
+  LogIn,
+  UserPlus,
+  ChevronDown,
+} from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../../context/AppContext';
@@ -12,13 +20,29 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const authenticatedMenuItems = [
-    { label: 'Account', icon: <User className="w-5 h-5 mr-2" />, onClick: () => navigate('/profile') },
-    { label: 'Favorites', icon: <Heart className="w-5 h-5 mr-2" />, onClick: () => navigate('/favorites') },
+    {
+      label: 'Account',
+      icon: <User className="w-5 h-5 mr-2" />,
+      onClick: () => navigate('/profile'),
+    },
+    {
+      label: 'Favorites',
+      icon: <Heart className="w-5 h-5 mr-2" />,
+      onClick: () => navigate('/favorites'),
+    },
   ];
 
   const unauthenticatedMenuItems = [
-    { label: 'Login', icon: <LogIn className="w-5 h-5 mr-2" />, onClick: () => navigate('/login') },
-    { label: 'Register', icon: <UserPlus className="w-5 h-5 mr-2" />, onClick: () => navigate('/register') },
+    {
+      label: 'Login',
+      icon: <LogIn className="w-5 h-5 mr-2" />,
+      onClick: () => navigate('/login'),
+    },
+    {
+      label: 'Register',
+      icon: <UserPlus className="w-5 h-5 mr-2" />,
+      onClick: () => navigate('/register'),
+    },
   ];
 
   const menuItems = user ? authenticatedMenuItems : unauthenticatedMenuItems;
@@ -27,9 +51,14 @@ const Navbar = () => {
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-800 text-white flex items-center justify-between px-4 py-3">
         <div className="flex items-center space-x-4">
-          <div className="text-xl font-bold cursor-pointer select-none" onClick={() => navigate('/')} >MovieStop</div>
+          <div
+            className="text-xl font-bold cursor-pointer select-none"
+            onClick={() => navigate('/')}
+          >
+            MovieStop
+          </div>
           <div className="hidden md:flex space-x-6">
-            {menuItems.map((item) => (
+            {menuItems.map(item => (
               <button
                 key={item.label}
                 onClick={item.onClick}
@@ -48,7 +77,7 @@ const Navbar = () => {
               </button>
               {genreDropdownOpen && (
                 <div className="absolute mt-2 w-48 bg-gray-700 opacity-95 rounded-md shadow-lg h-64 overflow-auto custom-scrollbar">
-                  {genres.map((genre) => (
+                  {genres.map(genre => (
                     <button
                       key={genre.id}
                       onClick={() => {
@@ -70,7 +99,9 @@ const Navbar = () => {
         <div className="flex items-center space-x-4">
           {user && (
             <>
-              <span className="hidden md:block">Hello, {user?.name || 'User'}</span>
+              <span className="hidden md:block">
+                Hello, {user?.name || 'User'}
+              </span>
               <button
                 onClick={() => {
                   logoutUser();
@@ -89,7 +120,11 @@ const Navbar = () => {
             className="md:hidden p-2 rounded hover:bg-gray-700"
             aria-label="Toggle menu"
           >
-            {sidebarOpen ? <p className="w-6 h-6"></p> : <Menu className="w-6 h-6" />}
+            {sidebarOpen ? (
+              <p className="w-6 h-6"></p>
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
         </div>
       </nav>
@@ -106,7 +141,7 @@ const Navbar = () => {
           </button>
         </div>
         <nav className="flex flex-col p-4 space-y-3">
-          {menuItems.map((item) => (
+          {menuItems.map(item => (
             <button
               key={item.label}
               onClick={() => {
@@ -120,30 +155,30 @@ const Navbar = () => {
             </button>
           ))}
           <div className="relative">
-              <button
-                onClick={() => setGenreDropdownOpen(!genreDropdownOpen)}
-                className="flex items-center ml-3 text-cyan-200 hover:text-cyan-500 transition"
-              >
-                Genres <ChevronDown className="w-5 h-5 ml-1" />
-              </button>
-              {genreDropdownOpen && (
-                <div className="absolute mt-2 w-48 bg-gray-700 rounded-md shadow-lg h-64 overflow-auto  custom-scrollbar">
-                  {genres.map((genre) => (
-                    <button
-                      key={genre.id}
-                      onClick={() => {
-                        selectGenre(genre);
-                        setGenreDropdownOpen(false);
-                        navigate('/');
-                      }}
-                      className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-gray-600"
-                    >
-                      {genre.name}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            <button
+              onClick={() => setGenreDropdownOpen(!genreDropdownOpen)}
+              className="flex items-center ml-3 text-cyan-200 hover:text-cyan-500 transition"
+            >
+              Genres <ChevronDown className="w-5 h-5 ml-1" />
+            </button>
+            {genreDropdownOpen && (
+              <div className="absolute mt-2 w-48 bg-gray-700 rounded-md shadow-lg h-64 overflow-auto  custom-scrollbar">
+                {genres.map(genre => (
+                  <button
+                    key={genre.id}
+                    onClick={() => {
+                      selectGenre(genre);
+                      setGenreDropdownOpen(false);
+                      navigate('/');
+                    }}
+                    className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-gray-600"
+                  >
+                    {genre.name}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
           {user && (
             <button

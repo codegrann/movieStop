@@ -19,7 +19,6 @@ const HomePage = () => {
     .filter((movie): movie is HeroMovie => !!movie.backdrop_path)
     .slice(0, 5);
 
-
   // Movie click handler to navigate to details page
   const handleMovieSelect = useCallback(
     (id: number) => {

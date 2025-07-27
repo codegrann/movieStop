@@ -31,7 +31,7 @@ const FavoritesPage = () => {
           })
         );
         const movieDetailsResponses = await Promise.all(movieDetailsPromises);
-        setMovies(movieDetailsResponses.map((res) => res.data));
+        setMovies(movieDetailsResponses.map(res => res.data));
       } catch (err) {
         setError('Failed to load favorite movies');
       } finally {
@@ -44,8 +44,14 @@ const FavoritesPage = () => {
     }
   }, [token]);
 
-  if (loading) return <div className='pt-20'><LoadingSpinner /></div>;
-  if (error) return <p className="text-center pt-20 text-red-500 mt-10">{error}</p>;
+  if (loading)
+    return (
+      <div className="pt-20">
+        <LoadingSpinner />
+      </div>
+    );
+  if (error)
+    return <p className="text-center pt-20 text-red-500 mt-10">{error}</p>;
 
   return (
     <div className="min-h-screen pt-20 bg-gray-900 text-white p-4 max-w-full mx-auto">
@@ -53,7 +59,10 @@ const FavoritesPage = () => {
       {movies.length === 0 ? (
         <p>You have no favorite movies yet.</p>
       ) : (
-        <MovieList movies={movies} onMovieSelect={(id) => navigate(`/movies/${id}`)} />
+        <MovieList
+          movies={movies}
+          onMovieSelect={id => navigate(`/movies/${id}`)}
+        />
       )}
     </div>
   );

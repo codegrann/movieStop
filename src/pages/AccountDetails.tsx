@@ -27,12 +27,11 @@ const AccountDetailsPage = () => {
       await API.put('/user/account', updateData, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      
+
       setMessage('Account updated successfully!');
       setPassword('');
       // Update local storage
       localStorage.setItem('user', JSON.stringify({ ...user, name }));
-     
     } catch (err: any) {
       setError(err.response?.data?.message);
       // console.log('Error updating account:', err);
@@ -40,7 +39,11 @@ const AccountDetailsPage = () => {
   };
 
   const handleDeleteAccount = async () => {
-    if (!window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+    if (
+      !window.confirm(
+        'Are you sure you want to delete your account? This action cannot be undone.'
+      )
+    ) {
       return;
     }
 
@@ -78,7 +81,7 @@ const AccountDetailsPage = () => {
           <input
             type="text"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={e => setName(e.target.value)}
             className="w-full px-3 py-2 rounded bg-gray-800 text-white"
           />
         </div>
@@ -88,7 +91,7 @@ const AccountDetailsPage = () => {
           <input
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
             placeholder="Leave blank to keep current password"
             className="w-full px-3 py-2 rounded bg-gray-800 text-white"
           />

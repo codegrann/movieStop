@@ -42,11 +42,18 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, onClick }) => {
 
         {/* Text content */}
         <div className="absolute bottom-0 left-0 p-4">
-          <h3 className="text-white text-lg font-bold truncate">{movie.title}</h3>
+          <h3 className="text-white text-lg font-bold truncate">
+            {movie.title}
+          </h3>
           <p className="text-gray-300 text-sm">
             {new Date(movie.release_date).getFullYear()}
-            <span className='text-yellow-400 font-bold ml-[5px] hidden group-hover:inline'> - {movie.vote_average.toFixed(1)}</span>
-            <span className="text-white font-normal hidden group-hover:inline">/10</span>
+            <span className="text-yellow-400 font-bold ml-[5px] hidden group-hover:inline">
+              {' '}
+              - {movie.vote_average.toFixed(1)}
+            </span>
+            <span className="text-white font-normal hidden group-hover:inline">
+              /10
+            </span>
           </p>
         </div>
       </div>

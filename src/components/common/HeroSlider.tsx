@@ -20,7 +20,7 @@ const HeroSlider = ({ movies }: HeroSliderProps) => {
     if (movies.length === 0) return;
 
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % movies.length);
+      setCurrentIndex(prevIndex => (prevIndex + 1) % movies.length);
     }, 5000); // Change image every 5 seconds
 
     return () => clearInterval(interval);

@@ -31,7 +31,7 @@ const MovieListContent: React.FC<{
   return (
     <div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        {movies.map((movie) => (
+        {movies.map(movie => (
           <MovieCard key={movie.id} movie={movie} onClick={onMovieSelect} />
         ))}
       </div>
@@ -50,7 +50,10 @@ const MovieListContent: React.FC<{
   );
 };
 
-const MovieList: React.FC<MovieListProps> = ({ movies: moviesProp, onMovieSelect }) => {
+const MovieList: React.FC<MovieListProps> = ({
+  movies: moviesProp,
+  onMovieSelect,
+}) => {
   const hookData = useMovies();
 
   if (moviesProp) {

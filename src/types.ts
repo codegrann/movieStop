@@ -22,7 +22,12 @@ export interface Movie {
   genre_ids?: number[];
   runtime?: number;
   credits?: {
-    cast: { id: number; name: string; character: string; profile_path: string | null }[];
+    cast: {
+      id: number;
+      name: string;
+      character: string;
+      profile_path: string | null;
+    }[];
     crew: { id: number; name: string; job: string }[];
   };
 }
