@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 
-// Use a local, simpler type that matches the data from useMovies hook
 interface HeroMovie {
   id: number;
   poster_path: string | null;

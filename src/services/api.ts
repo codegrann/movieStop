@@ -20,7 +20,7 @@ API.interceptors.response.use(
   error => {
     if (error.response?.status === 401) {
       // Token expired or invalid
-      // Clear user session here - call logout from context or localStorage clear
+      // Clear user session here - call logout from localStorage clear
       localStorage.removeItem('token');
       localStorage.removeItem('user');
 

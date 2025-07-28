@@ -5,7 +5,7 @@ import { useAuth } from '../hooks/useAuth';
 import API from '../services/api';
 import { Movie } from '../types';
 
-const IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
+const IMAGE_BASE = import.meta.env.VITE_POSTER_BASE_URL;
 
 const MovieDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
