@@ -29,3 +29,5 @@ jobs:
 
       - name: Run backend tests
         run: npm test --prefix services
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
