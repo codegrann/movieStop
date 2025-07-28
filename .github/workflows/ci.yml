@@ -25,7 +25,7 @@ jobs:
         run: npm install --prefix services
 
       - name: Run frontend tests
-        run: npm test
+        run: node --max-old-space-size=4096 node_modules/vitest/vitest.mjs run
 
       - name: Run backend tests
         run: npm test --prefix services
