@@ -1,12 +1,11 @@
-../../../src
 import { render, screen, fireEvent } from '@testing-library/react';
 import RegisterPage from '../../src/pages/Register';
 import { MemoryRouter } from 'react-router-dom';
 
-jest.mock('../../src/hooks/useAuth', () => ({
+vi.mock('../../src/hooks/useAuth', () => ({
   useAuth: () => ({
     user: null,
-    registerUser: jest.fn().mockResolvedValue(undefined),
+    registerUser: vi.fn().mockResolvedValue(undefined),
   })
 }));
 

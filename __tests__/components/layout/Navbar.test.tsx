@@ -1,24 +1,25 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Navbar from '../../../src/components/layout/Navbar';
-import * as useAuthModule from '@/hooks/useAuth';
+
+const navigateMock = vi.fn();
+const logoutMock = vi.fn();
+
+vi.mock('../../../src/hooks/useAuth', () => ({
+  useAuth: () => ({ user: { name: 'TestUser' }, logoutUser: logoutMock }),
+}));
+
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => navigateMock,
+  };
+});
 
 describe('Navbar', () => {
-  const logoutMock = vi.fn();
-  const navigateMock = vi.fn();
-
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mock('@/hooks/useAuth', () => ({
-      useAuth: () => ({ user: { name: 'TestUser' }, logoutUser: logoutMock }),
-    }));
-    vi.mock('react-router-dom', async () => {
-      const actual = await vi.importActual('react-router-dom');
-      return {
-        ...actual,
-        useNavigate: () => navigateMock,
-      };
-    });
   });
 
   it('renders logo and greets user', () => {

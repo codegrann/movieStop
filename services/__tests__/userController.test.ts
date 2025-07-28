@@ -1,4 +1,4 @@
-import { getUserProfile, addFavorite, removeFavorite, getFavorites, updateAccount, deleteAccount } from '../controllers/userController';
+import { addFavorite, removeFavorite, getFavorites, updateAccount, deleteAccount } from '../controllers/userController';
 import User from '../models/userModel';
 import dotenv from 'dotenv';
 

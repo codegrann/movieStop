@@ -23,9 +23,7 @@ describe('SearchBar', () => {
 
     vi.advanceTimersByTime(500);
 
-    await waitFor(() => {
-      expect(mockSearch).toHaveBeenCalledWith('batman');
-    });
+    expect(mockSearch).toHaveBeenCalledWith('batman');
   });
 
   it('cancels previous timer when input changes rapidly', () => {

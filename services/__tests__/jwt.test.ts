@@ -13,7 +13,7 @@ jest.mock('jsonwebtoken', () => ({
 describe('signToken', () => {
   it('should sign and return a token', () => {
     (jwt.sign as jest.Mock).mockReturnValue('signedtoken');
-    const token = signToken('123');
+    const token = signToken({ id: '123' });
     expect(token).toBe('signedtoken');
   });
 });

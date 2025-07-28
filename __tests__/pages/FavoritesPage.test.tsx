@@ -2,8 +2,13 @@ import { render, screen, waitFor } from '@testing-library/react';
 import FavoritesPage from '../../src/pages/FavoritesPage';
 import { AppProvider } from '../../src/context/AppContext';
 import API from '../../src/services/api';
+import { MemoryRouter } from 'react-router-dom';
 
-vi.mock('@/services/api');
+vi.mock('../../src/services/api', () => ({
+  default: {
+    get: vi.fn(),
+  },
+}));
 
 const favoriteIds = [1, 2];
 const movieData = (id: number) => ({
@@ -19,14 +24,20 @@ describe('FavoritesPage', () => {
   beforeEach(() => {
     localStorage.setItem('token', 'test-token');
     localStorage.setItem('user', JSON.stringify({ id: '1', name: 'User', email: 'user@example.com' }));
-    (API.get as any)
+    (API.get as vi.Mock)
       .mockResolvedValueOnce({ data: { favorites: favoriteIds } }) // /user/favorites
-      .mockResolvedValueOnce({ data: movieData(1) })               // /movies/1
-      .mockResolvedValueOnce({ data: movieData(2) });              // /movies/2
+      .mockResolvedValueOnce({ data: movieData(1) }) // /movies/1
+      .mockResolvedValueOnce({ data: movieData(2) }); // /movies/2
   });
 
   it('renders favorite movies', async () => {
-    render(<AppProvider><FavoritesPage /></AppProvider>);
+    render(
+      <MemoryRouter>
+        <AppProvider>
+          <FavoritesPage />
+        </AppProvider>
+      </MemoryRouter>
+    );
     await waitFor(() => {
       expect(screen.getByText('Movie 1')).toBeInTheDocument();
       expect(screen.getByText('Movie 2')).toBeInTheDocument();

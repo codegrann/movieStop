@@ -13,8 +13,10 @@ describe('MovieCard', () => {
   it('renders movie details correctly', () => {
     render(<MovieCard movie={sampleMovie} onClick={() => {}} />);
     expect(screen.getByText('Inception')).toBeInTheDocument();
-    expect(screen.getByText('2010')).toBeInTheDocument();
-    expect(screen.getByText('8.8')).toBeInTheDocument();
+    const yearAndRating = screen.getByText(/2010/);
+    expect(yearAndRating).toBeInTheDocument();
+    // The rating is hidden until hover, so we check the text content of the parent
+    expect(yearAndRating.textContent).toContain('8.8');
     expect(screen.getByAltText('Inception')).toBeInTheDocument();
   });
 

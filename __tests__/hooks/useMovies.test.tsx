@@ -1,8 +1,12 @@
-import { renderHook, act } from '@testing-library/react';
+import { renderHook, act, waitFor } from '@testing-library/react';
 import { useMovies } from '../../src/hooks/useMovies';
 import API from '../../src/services/api';
 
-vi.mock('@/services/api');
+vi.mock('../../src/services/api', () => ({
+  default: {
+    get: vi.fn(),
+  },
+}));
 
 const mockMovies = Array.from({ length: 5 }, (_, i) => ({
   id: i,
@@ -19,7 +23,7 @@ describe('useMovies', () => {
   });
 
   it('fetches popular movies on mount', async () => {
-    (API.get as any).mockResolvedValue({
+    (API.get as vi.Mock).mockResolvedValue({
       data: {
         results: mockMovies,
         page: 1,
@@ -27,27 +31,31 @@ describe('useMovies', () => {
       },
     });
 
-    const { result, waitForNextUpdate } = renderHook(() => useMovies());
+    const { result } = renderHook(() => useMovies());
 
-    await waitForNextUpdate();
+    await waitFor(() => expect(result.current.movies).toHaveLength(5));
 
-    expect(result.current.movies).toHaveLength(5);
     expect(result.current.page).toBe(1);
     expect(result.current.totalPages).toBe(2);
   });
 
   it('loads more movies', async () => {
-    (API.get as any).mockResolvedValueOnce({
-      data: { results: mockMovies, page: 1, total_pages: 2 },
-    }).mockResolvedValueOnce({
-      data: { results: mockMovies, page: 2, total_pages: 2 },
+    (API.get as vi.Mock)
+      .mockResolvedValueOnce({
+        data: { results: mockMovies, page: 1, total_pages: 2 },
+      })
+      .mockResolvedValueOnce({
+        data: { results: mockMovies, page: 2, total_pages: 2 },
+      });
+
+    const { result } = renderHook(() => useMovies());
+
+    await waitFor(() => expect(result.current.movies.length).toBe(5));
+
+    await act(async () => {
+      result.current.loadMore();
     });
 
-    const { result, waitForNextUpdate } = renderHook(() => useMovies());
-
-    await waitForNextUpdate();
-
-    await act(() => result.current.loadMore());
-    expect(result.current.movies.length).toBe(10);
+    await waitFor(() => expect(result.current.movies.length).toBe(10));
   });
 });

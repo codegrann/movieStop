@@ -1,5 +1,5 @@
 import { getPopularMovies, searchMovies, getMovieDetails } from '../controllers/movieController';
-import * as tmdpApi from '../utils/tmdpApi.ts';
+import * as tmdpApi from '../utils/tmdpApi';
 import dotenv from 'dotenv';
 
 dotenv.config();

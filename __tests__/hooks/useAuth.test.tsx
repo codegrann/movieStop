@@ -3,7 +3,12 @@ import { AppProvider } from '../../src/context/AppContext';
 import { useAuth } from '../../src/hooks/useAuth';
 import authService from '../../src/services/authService';
 
-vi.mock('@/services/authService');
+vi.mock('../../src/services/authService', () => ({
+  default: {
+    login: vi.fn(),
+    register: vi.fn(),
+  },
+}));
 
 const mockUser = { id: '1', name: 'Test User', email: 'test@example.com' };
 const mockToken = 'mock-token';

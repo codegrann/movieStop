@@ -41,7 +41,7 @@ describe('HomePage', () => {
   it('renders movie list when logged in', async () => {
     (useAuth as any).mockReturnValue({ user: { name: 'Tester' } });
     (useMovies as any).mockReturnValue({
-      movies: [{ id: 1, title: 'Test Movie', poster_path: null }],
+      movies: [{ id: 1, title: 'Test Movie', poster_path: null, vote_average: 7.5, release_date: '2021-01-01' }],
       loading: false,
       error: null,
       setSearchQuery: vi.fn(),
