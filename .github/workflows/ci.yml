@@ -31,3 +31,27 @@ jobs:
         run: npm test --prefix services
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install frontend dependencies
+        run: npm install
+
+      - name: Install backend dependencies
+        run: npm install --prefix services
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Build backend
+        run: npm run build --prefix services
