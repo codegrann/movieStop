@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Navbar from '../../../src/components/layout/Navbar';
-import { AppProvider } from '../../src/context/AppContext';
+import { AppProvider } from '../../../src/context/AppContext';
 
 const navigateMock = vi.fn();
 const logoutMock = vi.fn();

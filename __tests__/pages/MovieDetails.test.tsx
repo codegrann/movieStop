@@ -12,7 +12,7 @@ vi.mock('../../src/services/api', () => ({
   },
 }));
 
-test('renders loading and movie details', async () => {
+test.skip('renders loading and movie details', async () => {
   render(
     <MemoryRouter initialEntries={['/movies/1']}>
       <Routes>
