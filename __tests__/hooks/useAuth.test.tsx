@@ -10,7 +10,11 @@ vi.mock('../../src/services/authService', () => ({
   },
 }));
 
-const mockUser = { id: '1', name: 'Test User', email: 'test@example.com' };
+vi.mock('../../src/services/api', () => ({
+  getGenres: vi.fn().mockResolvedValue({ data: [] }),
+}));
+
+const mockUser = { id: '1', name: 'Test User', email: 'test@example.com', favorites: [] };
 const mockToken = 'mock-token';
 
 describe('useAuth', () => {
@@ -41,6 +45,7 @@ describe('useAuth', () => {
     });
 
     expect(result.current.user).toEqual(mockUser);
+    expect(result.current.token).toEqual(mockToken);
   });
 
   it('logs out a user', async () => {

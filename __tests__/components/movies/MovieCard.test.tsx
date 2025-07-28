@@ -13,17 +13,17 @@ describe('MovieCard', () => {
   it('renders movie details correctly', () => {
     render(<MovieCard movie={sampleMovie} onClick={() => {}} />);
     expect(screen.getByText('Inception')).toBeInTheDocument();
-    const yearAndRating = screen.getByText(/2010/);
-    expect(yearAndRating).toBeInTheDocument();
+    const year = screen.getByText(/2010/);
+    expect(year).toBeInTheDocument();
     // The rating is hidden until hover, so we check the text content of the parent
-    expect(yearAndRating.textContent).toContain('8.8');
+    expect(screen.getByText(/8.8/)).toBeInTheDocument();
     expect(screen.getByAltText('Inception')).toBeInTheDocument();
   });
 
   it('handles click event', () => {
     const handleClick = vi.fn();
     render(<MovieCard movie={sampleMovie} onClick={handleClick} />);
-    fireEvent.click(screen.getByText('Inception'));
+    fireEvent.click(screen.getByTestId('movie-card'));
     expect(handleClick).toHaveBeenCalledWith(1);
   });
 

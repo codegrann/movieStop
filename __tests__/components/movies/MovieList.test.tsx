@@ -33,7 +33,7 @@ describe('MovieList', () => {
   it('calls onMovieSelect when a card is clicked', () => {
     const handleSelect = vi.fn();
     render(<MovieList movies={movies} onMovieSelect={handleSelect} />);
-    fireEvent.click(screen.getByText('Inception'));
+    fireEvent.click(screen.getAllByTestId('movie-card')[0]);
     expect(handleSelect).toHaveBeenCalledWith(1);
   });
 });

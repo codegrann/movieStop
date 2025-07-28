@@ -35,7 +35,7 @@ describe('HomePage', () => {
     render(<HomePage />, { wrapper: MemoryRouter });
 
     // Expect navigation to happen, but since useNavigate is mocked, just check for no content
-    expect(screen.queryByText(/no more movies/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/You've reached the end./i)).not.toBeInTheDocument();
   });
 
   it('renders movie list when logged in', async () => {
@@ -52,7 +52,7 @@ describe('HomePage', () => {
     render(<HomePage />, { wrapper: MemoryRouter });
 
     await waitFor(() => {
-      expect(screen.getByText(/no more movies/i)).toBeInTheDocument();
+      expect(screen.getByText(/You've reached the end./i)).toBeInTheDocument();
     });
   });
 });

@@ -17,6 +17,7 @@ const POSTER_BASE_URL = import.meta.env.VITE_POSTER_BASE_URL;
 const MovieCard: React.FC<MovieCardProps> = ({ movie, onClick }) => {
   return (
     <div
+      data-testid="movie-card"
       onClick={() => onClick(movie.id)}
       className="group cursor-pointer bg-gray-800 rounded-lg overflow-hidden shadow-lg transition-all duration-300"
     >

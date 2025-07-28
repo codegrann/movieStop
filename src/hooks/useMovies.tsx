@@ -76,6 +76,8 @@ export const useMovies = () => {
     searchQuery,
     setSearchQuery,
     loadMore,
+    page,
+    totalPages,
     hasMore: page < totalPages,
   };
 };

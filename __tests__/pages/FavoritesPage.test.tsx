@@ -8,6 +8,7 @@ vi.mock('../../src/services/api', () => ({
   default: {
     get: vi.fn(),
   },
+  getGenres: vi.fn().mockResolvedValue({ data: [] }),
 }));
 
 const favoriteIds = [1, 2];
