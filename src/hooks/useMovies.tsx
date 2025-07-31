@@ -28,8 +28,8 @@ export const useMovies = () => {
       try {
         const url = query
           ? `${API_BASE}/movies/search?query=${encodeURIComponent(
-              query
-            )}&page=${pageNum}`
+            query
+          )}&page=${pageNum}`
           : `${API_BASE}/movies/popular?page=${pageNum}`;
 
         const res = await API.get<MoviesResponse>(url);
