@@ -1,5 +1,6 @@
 import React from 'react';
 import MovieCard from './MovieCard';
+import Pagination from '../common/Pagination'; // Import Pagination
 import { useMovies } from '../../hooks/useMovies';
 import { Movie } from '../../types';
 
@@ -12,10 +13,19 @@ const MovieListContent: React.FC<{
   movies: Movie[];
   loading: boolean;
   error: string | null;
-  hasMore: boolean;
-  loadMore: () => void;
+  page: number;
+  totalPages: number;
+  handlePageChange: (page: number) => void;
   onMovieSelect: (id: number) => void;
-}> = ({ movies, loading, error, hasMore, loadMore, onMovieSelect }) => {
+}> = ({
+  movies,
+  loading,
+  error,
+  page,
+  totalPages,
+  handlePageChange,
+  onMovieSelect,
+}) => {
   if (loading && movies.length === 0) {
     return <p className="text-gray-400 text-center mt-10">Loading movies...</p>;
   }
@@ -35,16 +45,12 @@ const MovieListContent: React.FC<{
           <MovieCard key={movie.id} movie={movie} onClick={onMovieSelect} />
         ))}
       </div>
-      {hasMore && (
-        <div className="flex justify-center mt-4">
-          <button
-            onClick={loadMore}
-            className="bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded"
-            disabled={loading}
-          >
-            {loading ? 'Loading...' : 'Load More'}
-          </button>
-        </div>
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       )}
     </div>
   );
@@ -58,14 +64,14 @@ const MovieList: React.FC<MovieListProps> = ({
 
   if (moviesProp) {
     // If movies are passed as a prop, render them directly.
-    // We can create dummy values for the other props since they won't be used.
     return (
       <MovieListContent
         movies={moviesProp}
         loading={false}
         error={null}
-        hasMore={false}
-        loadMore={() => {}}
+        page={1}
+        totalPages={1}
+        handlePageChange={() => {}}
         onMovieSelect={onMovieSelect}
       />
     );

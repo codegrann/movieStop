@@ -42,12 +42,7 @@ export const useMovies = () => {
           );
         }
 
-        setMovies(prevMovies => {
-          if (pageNum === 1) return newMovies;
-          const existingIds = new Set(prevMovies.map(m => m.id));
-          const uniqueNewMovies = newMovies.filter(m => !existingIds.has(m.id));
-          return [...prevMovies, ...uniqueNewMovies];
-        });
+        setMovies(newMovies);
         setPage(res.data.page);
         setTotalPages(res.data.total_pages);
       } catch (e) {
@@ -64,9 +59,9 @@ export const useMovies = () => {
     fetchMovies(1, searchQuery);
   }, [fetchMovies, searchQuery, selectedGenre]);
 
-  const loadMore = () => {
-    if (loading || page >= totalPages) return;
-    fetchMovies(page + 1, searchQuery);
+  const handlePageChange = (newPage: number) => {
+    if (loading || newPage < 1 || newPage > totalPages) return;
+    fetchMovies(newPage, searchQuery);
   };
 
   return {
@@ -75,9 +70,8 @@ export const useMovies = () => {
     error,
     searchQuery,
     setSearchQuery,
-    loadMore,
     page,
     totalPages,
-    hasMore: page < totalPages,
+    handlePageChange,
   };
 };
